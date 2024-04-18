@@ -63,6 +63,28 @@
             }
           ];
         };
+        think-2xl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit inputs overlay-unstable;
+          };
+          modules = [
+            ./hosts/think-2xl/configuration.nix
+            ./hosts/think-2xl/system/packages.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = { inherit inputs; };
+
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.alphas = import ./hosts/think-2xl/alphas/home.nix;
+
+              # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+            }
+          ];
+        };
       };
     };
 }
