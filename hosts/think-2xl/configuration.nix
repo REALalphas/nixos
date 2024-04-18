@@ -27,28 +27,19 @@
     "electron-25.9.0"
   ];
 
-  # Enable AMD GPU
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  environment.variables = {
-    ROC_ENABLE_PRE_VEGA = "1";
-  };
-
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
   };
-  hardware.opengl.extraPackages = with pkgs; [
-    amdvlk
-  ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/nvme0n1";
-  boot.loader.grub.useOSProber = true;
-
-  networking.hostName = "nas-2xl"; # Define your hostname.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.initrd.luks.devices."luks-e4522eee-eec6-42ef-8290-b4e469119304".device = "/dev/disk/by-uuid/e4522eee-eec6-42ef-8290-b4e469119304";
+  
+  networking.hostName = "think-2xl"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable experemental flakes feature
@@ -190,7 +181,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
