@@ -1,4 +1,5 @@
 sudo rm -rf /etc/nixos/
+mkdir /etc/nixos
 cd /etc/nixos
 
 sudo nix flake init --extra-experimental-features 'nix-command flakes'
