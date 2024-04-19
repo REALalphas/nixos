@@ -110,6 +110,6 @@
     unstable.prismlauncher
 
     # Editor
-    unstable.zed-editor
+    # unstable.zed-editor
   ];
 }

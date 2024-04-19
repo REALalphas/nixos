@@ -27,11 +27,14 @@
     "electron-25.9.0"
   ];
 
+  # Enable latest kernel
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Enable AMD GPU
   boot.initrd.kernelModules = [ "amdgpu" ];
-  environment.variables = {
-    ROC_ENABLE_PRE_VEGA = "1";
-  };
+  # environment.variables = {
+  #   ROC_ENABLE_PRE_VEGA = "1";
+  # };
 
   # Enable OpenGL
   hardware.opengl = {
@@ -89,6 +92,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
