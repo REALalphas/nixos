@@ -19,19 +19,16 @@
       # ./system/gnome.nix
     ];
 
-  # Enable unstable packages
-  nixpkgs.overlays = [ overlay-unstable ];
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
-  ];
+  nixpkgs = {
+    # Enable unstable packages
+    overlays = [ overlay-unstable ];
+    # Allow unfree packages
+    config.allowUnfree = true;
+    config.permittedInsecurePackages = [
+      "electron-25.9.0"
+    ];
+  };
 
-  # Enable latest kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  # Enable AMD GPU
-  boot.initrd.kernelModules = [ "amdgpu" ];
   # environment.variables = {
   #   ROC_ENABLE_PRE_VEGA = "1";
   # };
@@ -40,10 +37,16 @@
   hardware.opengl = {
     enable = true;
     driSupport = true;
-    driSupport32Bit = true;
   };
   hardware.opengl.extraPackages = with pkgs; [
+    rocmPackages.clr
+    rocmPackages.rpp
+    rocmPackages.clr.icd
     amdvlk
+  ];
+  # Enable HIP system wide
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
   ];
 
   # Bootloader.
@@ -55,14 +58,16 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable experemental flakes feature
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    auto-optimise-store = true;
-  };
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   # Configure network proxy if necessary
@@ -92,7 +97,8 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  # services.xserver.videoDrivers = [ "amdgpu" ];
+  services.xserver.videoDrivers = [ "amdgpu-pro" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   # Enable nix-ld to run unpatched dynamic binaries
@@ -28,11 +28,19 @@
 
   # Open LLMs engine
   services.ollama = {
-    package = pkgs.unstable.ollama;
+    # package = pkgs.ollama;
     enable = true;
-    # acceleration = "rocm";
+    acceleration = "rocm";
     listenAddress = "0.0.0.0:11434";
   };
+
+  # GStreamer libs
+  environment.sessionVariables.GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
+    gst-plugins-good
+    gst-plugins-bad
+    gst-plugins-ugly
+    gst-libav
+  ]);
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
@@ -64,7 +72,6 @@
     wget
     nfs-utils
     pkgs.protonvpn-gui
-    keepassxc
 
     gptfdisk
     dmg2img
@@ -84,14 +91,9 @@
     # Cartridges
     cartridges
 
-    nvtop-amd
-    # GStreamer and ffmpeg
-    ffmpeg
-    gst_all_1.gstreamer
-    gst_all_1.gst-vaapi
+    # ffmpeg
+    unstable.ffmpeg_7-full
 
-    # Kdenlive (Video Editor)
-    unstable.kdePackages.kdenlive
     # SMPlayer (mpv and mplayer)
     unstable.smplayer
     mpv-unwrapped
@@ -106,5 +108,18 @@
 
     android-tools
     scrcpy
+
+    # File size tree
+    ncdu
+
+    # Game streaming
+    sunshine
+
+    # AMD AMF headers
+    unstable.amf-headers
+
+
+    libva
+    libva-utils
   ];
 }

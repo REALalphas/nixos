@@ -22,7 +22,7 @@
       speed = 0.0;
     };
   };
-  
+
 
 
   # This value determines the Home Manager release that your configuration is

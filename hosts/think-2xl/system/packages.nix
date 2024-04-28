@@ -90,8 +90,6 @@
     gst_all_1.gstreamer
     gst_all_1.gst-vaapi
 
-    # Kdenlive (Video Editor)
-    unstable.kdePackages.kdenlive
     # SMPlayer (mpv and mplayer)
     unstable.smplayer
     mpv-unwrapped

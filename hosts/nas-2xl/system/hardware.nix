@@ -9,10 +9,17 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  # Enable latest kernel
+  # linux_6_8
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+  # Enable AMD GPU
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.kernelModules = [ "kvm-amd" "v4l2loopback" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+    # amdgpu-pro
+  ];
 
   fileSystems."/" =
     {

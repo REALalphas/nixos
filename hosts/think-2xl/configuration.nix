@@ -38,7 +38,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.luks.devices."luks-e4522eee-eec6-42ef-8290-b4e469119304".device = "/dev/disk/by-uuid/e4522eee-eec6-42ef-8290-b4e469119304";
-  
+
   networking.hostName = "think-2xl"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

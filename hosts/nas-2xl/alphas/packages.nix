@@ -89,7 +89,7 @@
     winetricks
 
     # Node.js for development
-    nodejs_21
+    nodejs
     # Bun
     bun
 
@@ -111,5 +111,18 @@
 
     # Editor
     # unstable.zed-editor
+
+    # Util for monitoring usage of amdgpu
+    amdgpu_top
+
+    unstable.blender-hip
+
+    # OBS Studio and plugins
+    unstable.obs-studio
+    obs-studio-plugins.obs-vaapi
+
+    # KeePassXC (Password manager) and Reminna (SSH + RD Client)
+    keepassxc
+    remmina
   ];
 }
