@@ -1,0 +1,10 @@
+#!/bin/sh
+
+sudo rm -rf /etc/nixos
+sudo rsync -av --progress --exclude='.git' --update ./ /etc/nixos/
+
+cd /etc/nixos
+sudo nix flake update
+sudo nixos-rebuild switch --upgrade --flake /etc/nixos --show-trace --option eval-cache false
+sudo nix-collect-garbage --delete-older-than 14d --delete-old
+sudo nix-store --gc

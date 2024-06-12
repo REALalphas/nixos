@@ -14,9 +14,20 @@
   # DistroBox (BoxBuddy) and Podman
   virtualisation.podman.enable = true;
 
+  # ArchiSteamFarm
+  services.archisteamfarm = {
+    enable = true;
+    web-ui.enable = true;
+  };
+
   # Virt-Manager and LibVirt Daemon
-  virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+    };
+  };
   boot.extraModprobeConfig = ''
     options kvm_intel nested=1
     options kvm_intel emulate_invalid_guest_state=0
@@ -63,6 +74,7 @@
     pkgs.gnome.gnome-tweaks
     pkgs.gnomeExtensions.appindicator
     pkgs.gnomeExtensions.blur-my-shell
+    gnome.gnome-sound-recorder
     networkmanagerapplet
 
     spotify
@@ -92,7 +104,9 @@
     cartridges
 
     # ffmpeg
-    unstable.ffmpeg_7-full
+    # unstable.ffmpeg_7-full
+    jellyfin-ffmpeg
+
 
     # SMPlayer (mpv and mplayer)
     unstable.smplayer
@@ -118,8 +132,24 @@
     # AMD AMF headers
     unstable.amf-headers
 
+    # VirtIO File System Directory
+    virtiofsd
 
     libva
     libva-utils
+
+    python3
+    # pythonPackages.tkinter
+    # pythonPackages.pyautogui
+    # pythonPackages.pydevtool
+    # pythonPackages.pip
+    scrot
+
+    amberol
+    gamescope
+    unstable.warp-terminal
+    nixpkgs2311.yuzu-mainline
+
+    moonlight-qt
   ];
 }

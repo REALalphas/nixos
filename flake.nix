@@ -2,7 +2,8 @@
   description = "NixOS configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-2311.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nix-gaming.url = "github:fufexan/nix-gaming";
 
@@ -14,15 +15,21 @@
 
     # home-manager, used for managing user configuration
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, aagl, home-manager, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-2311, nixpkgs-unstable, aagl, home-manager, ... }:
     let
       overlay-unstable = (final: prev: {
         unstable = import nixpkgs-unstable {
+          inherit (final) system;
+          config.allowUnfree = true;
+        };
+      });
+      overlay-2311 = (final: prev: {
+        nixpkgs2311 = import nixpkgs-2311 {
           inherit (final) system;
           config.allowUnfree = true;
         };
@@ -33,7 +40,7 @@
         nas-2xl = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs overlay-unstable;
+            inherit inputs overlay-unstable overlay-2311;
           };
           modules = [
             ./hosts/nas-2xl/configuration.nix
@@ -66,7 +73,7 @@
         think-2xl = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs overlay-unstable;
+            inherit inputs overlay-unstable overlay-2311;
           };
           modules = [
             ./hosts/think-2xl/configuration.nix

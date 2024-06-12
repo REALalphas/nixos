@@ -11,14 +11,16 @@
 
   # Enable latest kernel
   # linux_6_8
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Ensure latest kernel used when using "amdgpu"
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   # Enable AMD GPU
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-amd" "v4l2loopback" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
     # amdgpu-pro
+    v4l2loopback
   ];
 
   fileSystems."/" =

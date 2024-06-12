@@ -1,3 +1,5 @@
+#!/bin/sh
+
 sudo rm -rf /etc/nixos/
 sudo mkdir /etc/nixos
 cd /etc/nixos

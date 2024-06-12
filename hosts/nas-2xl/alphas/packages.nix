@@ -60,6 +60,8 @@
       "terminal.integrated.scrollback" = 3000;
       # Git settings
       "git.autofetch" = true;
+      # ollama autocoder
+      "ollama-autocoder.model" = "codestral:latest";
     };
   };
 
@@ -82,7 +84,7 @@
     qbittorrent
 
     # Moonlight (client for straming)
-    moonlight-qt
+    # moonlight-qt
 
     # Wine
     wine64
@@ -124,5 +126,14 @@
     # KeePassXC (Password manager) and Reminna (SSH + RD Client)
     keepassxc
     remmina
+
+    jstest-gtk
+    ventoy-full
+    piper
+
+    pitivi
+
+    unstable.gnome-builder
+    unstable.flatpak-builder
   ];
 }

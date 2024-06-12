@@ -8,6 +8,7 @@
 , config
 , pkgs
 , overlay-unstable
+, overlay-2311
 , ...
 }:
 
@@ -21,7 +22,7 @@
 
   nixpkgs = {
     # Enable unstable packages
-    overlays = [ overlay-unstable ];
+    overlays = [ overlay-unstable overlay-2311 ];
     # Allow unfree packages
     config.allowUnfree = true;
     config.permittedInsecurePackages = [
@@ -39,8 +40,6 @@
     driSupport = true;
   };
   hardware.opengl.extraPackages = with pkgs; [
-    rocmPackages.clr
-    rocmPackages.rpp
     rocmPackages.clr.icd
     amdvlk
   ];
@@ -98,7 +97,6 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   # services.xserver.videoDrivers = [ "amdgpu" ];
-  services.xserver.videoDrivers = [ "amdgpu-pro" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -138,6 +136,10 @@
   # services.xserver.libinput.enable = true;
 
 
+  # Enable flatpak
+  services.flatpak.enable = true;
+
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.alphas = {
     isNormalUser = true;
@@ -148,8 +150,10 @@
     ];
   };
 
-  # Mount web-2xl NFS share
+  # Gaming mice interface
+  services.ratbagd.enable = true;
 
+  # Mount web-2xl NFS share
   services.rpcbind.enable = true; # needed for NFS
   systemd.mounts = [{
     type = "nfs";
@@ -208,5 +212,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }
