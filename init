@@ -4,5 +4,8 @@ sudo rm -rf /etc/nixos/
 sudo mkdir /etc/nixos
 cd /etc/nixos
 
+# nixos-rebuild --flake .#mymachine \
+#   --target-host mymachine-hostname --build-host mymachine-hostname --fast \
+#   switch
 sudo nix flake init --extra-experimental-features 'nix-command flakes'
 sudo nixos-rebuild switch --upgrade --flake /etc/nixos --show-trace

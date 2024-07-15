@@ -4,6 +4,12 @@ sudo rsync -av --progress --exclude='.git' --update ./ /etc/nixos/
 
 cd /etc/nixos
 sudo nix flake update
-sudo nixos-rebuild switch --flake /etc/nixos --delete-old
+sudo nixos-rebuild switch --upgrade --flake /etc/nixos --show-trace --option eval-cache false
 sudo nix-collect-garbage -d
 sudo nix-store --gc
+
+# Clean journal
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=1d
+# Clean systemd
+sudo systemd-tmpfiles --clean
