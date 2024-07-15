@@ -13,10 +13,14 @@
 
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-extensions; [
+    package = pkgs.unstable.vscode;
+    extensions = with pkgs.unstable.vscode-extensions; [
       pkief.material-product-icons
+      # Language support
+      bbenoist.nix
+      # Formatter
       jnoortheen.nix-ide
-    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+    ] ++ pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
       {
         name = "beardedtheme";
         publisher = "BeardedBear";
@@ -28,12 +32,6 @@
         publisher = "JonathanHarty";
         version = "1.1.5";
         sha256 = "f3a51652e58a4fa69dc78870e0e270ddc499c5664a2c7e2e2d33be4ac83be606";
-      }
-      {
-        name = "aw-watcher-vscode";
-        publisher = "lindraupe";
-        version = "0.4.1";
-        sha256 = "0be0b6b52a13dbee26470cad2a6afc3adee8e5f8e0f98c5272c1831785309af2";
       }
     ];
 
@@ -56,12 +54,10 @@
       "editor.fontFamily" = "'Fira Code', 'Droid Sans Mono', monospace";
       "editor.fontLigatures" = true;
       # Terminal settings
-      # "terminal.integrated.smoothScrolling" = true;
+      "terminal.integrated.smoothScrolling" = true;
       "terminal.integrated.scrollback" = 3000;
       # Git settings
       "git.autofetch" = true;
-      # ollama autocoder
-      "ollama-autocoder.model" = "codestral:latest";
     };
   };
 
@@ -70,15 +66,21 @@
     # inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
     unstable.osu-lazer-bin
 
-    # Pipewire stuff
-    unstable.easyeffects
-    helvum
-
     gnome-frog
 
     # Vivaldi
     unstable.vivaldi
     unstable.vivaldi-ffmpeg-codecs
+
+    # Tor Browser
+    unstable.tor-browser
+
+    # Floorp
+    # unstable.floorp
+    vdhcoapp
+
+    # Firefox
+    firefox-devedition
 
     # qBittorrent
     qbittorrent
@@ -98,16 +100,11 @@
     # Discord + Vencord and OpenASAR
     (discord.override {
       # withOpenASAR = true;
-      withVencord = true;
+      # withVencord = true;
     })
-
-    # Monitor screen time and activity
-    activitywatch
 
     # Obsidian
     obsidian
-
-    unstable.ungoogled-chromium
 
     unstable.prismlauncher
 
@@ -117,23 +114,45 @@
     # Util for monitoring usage of amdgpu
     amdgpu_top
 
-    unstable.blender-hip
+    blender-hip
 
     # OBS Studio and plugins
     unstable.obs-studio
     obs-studio-plugins.obs-vaapi
 
-    # KeePassXC (Password manager) and Reminna (SSH + RD Client)
+    # KeePassXC (Password manager)
     keepassxc
+    # Reminna (SSH + RD Client)
     remmina
-
+    # JSTest (Gamepad and 'xinput' tester)
     jstest-gtk
+    # Ventoy cli installer
     ventoy-full
+    # Piper (Mouse settings editor)
     piper
 
     pitivi
 
     unstable.gnome-builder
     unstable.flatpak-builder
+
+    # Warp Terminal
+    # unstable.warp-terminal
+
+    # Yuzu Nintendo Switch Emulator
+    nixpkgs2311.yuzu-mainline
+
+    # ALVR
+    unstable.alvr
+
+    # Android Tools and Scrcpy
+    android-tools
+    scrcpy
+
+    # moonlight-qt
+
+    # Pipewire stuff
+    unstable.easyeffects
+    helvum
   ];
 }

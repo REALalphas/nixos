@@ -14,16 +14,14 @@
       package = pkgs.adw-gtk3;
     };
 
-    cursorTheme = {
-      name = "WhiteSur-cursors";
-      package = pkgs.unstable.whitesur-cursors;
-    };
-
     iconTheme = {
       name = "WhiteSur-dark";
       package = pkgs.unstable.whitesur-icon-theme;
     };
 
+    # gtk3.extraConfig.Settings = ''
+    #   gtk-application-prefer-dark-theme=1
+    # '';
     gtk4.extraConfig.Settings = ''
       gtk-application-prefer-dark-theme=1
     '';
@@ -42,7 +40,6 @@
   };
 
   dconf.settings = {
-    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
     # ...
     # "org/gnome/shell" = {
     #   favorite-apps = [
@@ -54,10 +51,10 @@
     #     "org.gnome.Nautilus.desktop"
     #   ];
     # };
-    # "org/gnome/desktop/interface" = {
-    #   color-scheme = "prefer-dark";
-    #   # enable-hot-corners = false;
-    # };
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      # enable-hot-corners = false;
+    };
     # "org/gnome/desktop/wm/preferences" = {
     #   workspace-names = [ "Main" ];
     # };

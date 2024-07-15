@@ -10,14 +10,39 @@
 
   # Steam
   programs.steam.enable = true;
+  programs.steam.extraCompatPackages = with pkgs; [
+    proton-ge-bin
+  ];
 
   # DistroBox (BoxBuddy) and Podman
-  virtualisation.podman.enable = true;
+  # virtualisation.podman.enable = true;
 
   # ArchiSteamFarm
   services.archisteamfarm = {
     enable = true;
     web-ui.enable = true;
+  };
+
+  # Gamemode
+  programs.gamemode = {
+    enable = true;
+    settings = {
+      general = {
+        renice = 10;
+      };
+
+      # WARN: GPU optimisations have the potential to damage hardware
+      gpu = {
+        apply_gpu_optimisations = "accept-responsibility";
+        gpu_device = 0;
+        amd_performance_level = "high";
+      };
+
+      custom = {
+        start = "${pkgs.libnotify}/bin/notify-send 'Gamemode enabled'";
+        end = "${pkgs.libnotify}/bin/notify-send 'Gamemode disabled'";
+      };
+    };
   };
 
   # Virt-Manager and LibVirt Daemon
@@ -37,12 +62,22 @@
   # OpenTabletDriver
   hardware.opentabletdriver.enable = true;
 
+  # Mozilla VPN
+  services.mozillavpn.enable = true;
+
   # Open LLMs engine
-  services.ollama = {
-    # package = pkgs.ollama;
+  # services.ollama = {
+  #   package = pkgs.unstable.ollama-rocm;
+  #   enable = true;
+  #   acceleration = "rocm";
+  #   host = "0.0.0.0";
+  #   port = 11434;
+  # };
+
+  # Open source AI Assistant for coding
+  services.tabby = {
     enable = true;
-    acceleration = "rocm";
-    listenAddress = "0.0.0.0:11434";
+    acceleration = "cpu";
   };
 
   # GStreamer libs
@@ -57,8 +92,8 @@
   environment.systemPackages = with pkgs; [
 
     # DistroBox (BoxBuddy) and Podman
-    unstable.distrobox
-    unstable.boxbuddy
+    # unstable.distrobox
+    # unstable.boxbuddy
 
     # Fast json...
     jq
@@ -68,13 +103,16 @@
 
     icu
     # OnlyOffice Desktop
-    pkgs.onlyoffice-bin
+    onlyoffice-bin
 
     # Just gnome twerks
-    pkgs.gnome.gnome-tweaks
-    pkgs.gnomeExtensions.appindicator
-    pkgs.gnomeExtensions.blur-my-shell
+    gnome.gnome-tweaks
     gnome.gnome-sound-recorder
+    # Gnome Extensions
+    gnomeExtensions.appindicator
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.gemini-ai
+
     networkmanagerapplet
 
     spotify
@@ -83,7 +121,6 @@
     nano
     wget
     nfs-utils
-    pkgs.protonvpn-gui
 
     gptfdisk
     dmg2img
@@ -91,21 +128,17 @@
     # Signal Desktop
     unstable.signal-desktop
 
-
-
     # Bottles (games launcher)
-    # bottles-unwrapped
-    (bottles.override { extraLibraries = pkgs: [ pkgs.libunwind ]; })
-    (lutris.override { extraLibraries = pkgs: [ pkgs.libunwind ]; })
+    (bottles.override { extraLibraries = pkgs: [ libunwind ]; })
+    (lutris.override { extraLibraries = pkgs: [ libunwind ]; })
     # Heroic
-    # heroic
-    (heroic.override { extraLibraries = pkgs: [ pkgs.stdenv.cc.cc.lib ]; })
+    (heroic.override { extraLibraries = pkgs: [ stdenv.cc.cc.lib ]; })
     # Cartridges
     cartridges
 
     # ffmpeg
     # unstable.ffmpeg_7-full
-    jellyfin-ffmpeg
+    # jellyfin-ffmpeg
 
 
     # SMPlayer (mpv and mplayer)
@@ -116,18 +149,13 @@
     gnome.dconf-editor
     audacity
 
-    unstable.alvr
-
     neofetch
-
-    android-tools
-    scrcpy
 
     # File size tree
     ncdu
 
     # Game streaming
-    sunshine
+    # sunshine
 
     # AMD AMF headers
     unstable.amf-headers
@@ -147,9 +175,9 @@
 
     amberol
     gamescope
-    unstable.warp-terminal
-    nixpkgs2311.yuzu-mainline
 
-    moonlight-qt
+    # Port Audio API for pituhon
+    alsa-lib
+    portaudio
   ];
 }

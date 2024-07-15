@@ -6,20 +6,20 @@
     ./style.nix
   ];
 
-  home.username = "alphas";
-  home.homeDirectory = "/home/alphas";
+  home.username = "kaktus";
+  home.homeDirectory = "/home/kaktus";
   dconf.settings = {
-    # Mouse acceliration ["default", "flat", "adaptive"]
-    "org/gnome/desktop/peripherals/mouse".accel-profile = "flat";
-    # Icons in titlebar
-    "org/gnome/desktop/wm/preferences".button-layout = "appmenu:minimize,close";
-    # Font for titlebar
-    "org/gnome/desktop/wm/preferences".titlebar-font = "Cantarell Bold 11";
-
-    # Add qemu handler for VMs
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = [ "qemu:///system" ];
       uris = [ "qemu:///system" ];
+    };
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:minimize,close";
+      titlebar-font = "Cantarell Bold 11";
+    };
+    "org/gnome/desktop/peripherals/mouse" = {
+      accel-profile = "flat";
+      speed = 0.0;
     };
   };
 

@@ -99,13 +99,8 @@
       withVencord = true;
     })
 
-    # Monitor screen time and activity
-    activitywatch
-
     # Obsidian
     obsidian
-
-    unstable.ungoogled-chromium
 
     unstable.prismlauncher
 

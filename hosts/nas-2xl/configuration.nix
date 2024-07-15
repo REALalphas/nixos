@@ -15,10 +15,13 @@
 {
   imports =
     [
+      # Cachix
+      ../../cachix/ezkea.nix
       # Include the results of the hardware scan.
       ./system/hardware.nix
-      # ./system/gnome.nix
+      ./system/gnome.nix
     ];
+  disabledModules = [ "modules/services/misc/ollama.nix" ];
 
   nixpkgs = {
     # Enable unstable packages
@@ -30,6 +33,9 @@
     ];
   };
 
+  # Disable nixos documentation
+  documentation.nixos.enable = false;
+
   # environment.variables = {
   #   ROC_ENABLE_PRE_VEGA = "1";
   # };
@@ -39,13 +45,31 @@
     enable = true;
     driSupport = true;
   };
+  # hardware.amdgpu.opencl.enable = true;
   hardware.opengl.extraPackages = with pkgs; [
     rocmPackages.clr.icd
+    rocmPackages.rpp-hip
+    rocmPackages.hipcc
+    rocmPackages.hipblas
+    rocmPackages.hipsolver
+    rocmPackages.hip-common
+    rocmPackages.rocm-comgr
+    rocmPackages.rocm-thunk
+    rocmPackages.rocm-cmake
+    rocmPackages.miopen
+    rocmPackages.llvm.llvm
+    rocmPackages.llvm.libc
+    rocmPackages.llvm.libcxx
+    rocmPackages.llvm.libunwind
+    rocmPackages.llvm.libcxxabi
+    rocmPackages.llvm.compiler-rt
+    rocmPackages.llvm.openmp
+    # zluda
     amdvlk
   ];
   # Enable HIP system wide
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  systemd.tmpfiles.rules = with pkgs; [
+    "L+    /opt/rocm/hip   -    -    -     -    ${rocmPackages.clr}"
   ];
 
   # Bootloader.
@@ -96,6 +120,8 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  # Exclude xterm
+  services.xserver.excludePackages = [ pkgs.xterm ];
   # services.xserver.videoDrivers = [ "amdgpu" ];
 
   # Enable the GNOME Desktop Environment.
@@ -107,7 +133,6 @@
     layout = "us";
     variant = "";
   };
-
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -145,6 +170,14 @@
     isNormalUser = true;
     description = "AlphaS";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    packages = with pkgs; [
+
+    ];
+  };
+  users.users.kaktus = {
+    isNormalUser = true;
+    description = "Kaktus";
+    extraGroups = [ "networkmanager" ];
     packages = with pkgs; [
 
     ];
