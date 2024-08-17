@@ -1,0 +1,7 @@
+#!/bin/sh
+
+sudo rsync -av --progress --exclude='.git' --update ./ /etc/nixos/
+
+cd /etc/nixos
+sudo nix flake update
+sudo nixos-rebuild switch --upgrade --flake .

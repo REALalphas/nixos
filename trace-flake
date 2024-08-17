@@ -1,0 +1,8 @@
+#!/bin/sh
+
+sudo rm -rf /etc/nixos/
+sudo mkdir /etc/nixos
+sudo rsync -av --progress --exclude='.git' --update ./ /etc/nixos/
+
+cd /etc/nixos
+sudo nixos-rebuild switch --flake . --show-trace
