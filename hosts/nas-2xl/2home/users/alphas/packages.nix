@@ -112,6 +112,12 @@
     # Ollama client made with GTK4 and Adwaita # See 10services.nix
     unstable.alpaca
 
+    # PS3 emulator/debugger
+    rpcs3
+
+    # Nintendo Switch Emulator
+    nix23-11.yuzu-mainline
+
     ## nix-gaming
   ]) ++ (with inputs.nix-gaming.packages.${pkgs.system}; [
     osu-lazer-bin

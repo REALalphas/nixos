@@ -41,7 +41,7 @@
     # Welcome tour
     gnome-tour
     # Camera app
-    snapshot
+    # snapshot
     # Gnome password manager
     gnome-secrets
     # VNC/RDP Client
@@ -67,8 +67,20 @@
     # yelp
   ]);
 
+  # KVM Support
+  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.qemu.package = pkgs.qemu_kvm;
+
   # Add session variables
-  environment.sessionVariables = { };
+  environment.sessionVariables = {
+    GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0"
+      (with pkgs.gst_all_1; [
+        gst-plugins-good
+        gst-plugins-bad
+        gst-plugins-ugly
+        gst-libav
+      ]);
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

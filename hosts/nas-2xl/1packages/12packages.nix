@@ -48,6 +48,15 @@
     # 3D Creation/Animation/Publishing System
     blender-hip
 
+    # IDE for Android
+    androidStudioPackages.dev
+    # Android SDK platform tools
+    android-tools
+    # Android Studio CLI Tools
+    android-studio-tools
+    # Flutter is Google's SDK for building mobile, web and desktop with Dart
+    flutter
+
     # Sigma messanger
     signal-desktop
 
@@ -67,6 +76,19 @@
     (bottles.override { extraLibraries = pkgs: [ libunwind ]; })
     # Cartridges
     cartridges
+
+    ## Rasberry Pi Pico Development
+    gcc
+    go
+    elixir
+    libclang
+    python3
+    libusb1
+    # openocd
+    openocd-rp2040
+    pico-sdk
+    picotool
+    ninja
 
     ## Gnome Extensions
   ]) ++ (with pkgs.gnomeExtensions; [

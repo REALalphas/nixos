@@ -2,7 +2,7 @@
 
 let
   userList = [
-    { name = "alphas"; description = "AlphaS"; groups = [ "networkmanager" "wheel" "adbusers" ]; }
+    { name = "alphas"; description = "AlphaS"; groups = [ "networkmanager" "wheel" "libvirtd" "adbusers" "video" ]; }
     { name = "kaktus"; description = "Kaktus"; groups = [ "networkmanager" ]; }
   ];
 
