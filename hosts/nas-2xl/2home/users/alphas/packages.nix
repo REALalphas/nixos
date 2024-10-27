@@ -101,7 +101,7 @@
     # spotify
 
     # A program for comparing multiple versions of an image or video
-    identity
+    unstable.identity
 
     # Discord Web client with Wayland support and preinstalled Vencord
     vesktop
@@ -117,6 +117,22 @@
 
     # Nintendo Switch Emulator
     nix23-11.yuzu-mainline
+
+    # TCP Traffic Shaker
+    unstable.spoofdpi
+
+    # DDC util (Control monitor)
+    ddcutil
+
+    # A feature-rich client for Matrix.org
+    element-desktop
+
+    # Drawing/editing program modeled after Paint.NET
+    pinta
+
+    prismlauncher
+
+    moonlight-qt
 
     ## nix-gaming
   ]) ++ (with inputs.nix-gaming.packages.${pkgs.system}; [

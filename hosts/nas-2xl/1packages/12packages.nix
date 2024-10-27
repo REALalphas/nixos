@@ -90,6 +90,22 @@
     picotool
     ninja
 
+    # Jellyfin (Home Media Server) # See 10services.nix
+    jellyfin
+    jellyfin-web
+    jellyfin-ffmpeg
+
+    # Cisco Packet Tracer
+    ciscoPacketTracer8
+
+    # QT Adwaita theme # See configuration.nix
+    adwaita-qt
+    adwaita-qt6
+    qadwaitadecorations-qt6
+    # QT Gnome platform
+    qgnomeplatform
+    qgnomeplatform-qt6
+
     ## Gnome Extensions
   ]) ++ (with pkgs.gnomeExtensions; [
     # Tray icons
@@ -97,6 +113,8 @@
     # Shell blur
     blur-my-shell
     gsconnect
+    # DDC controll
+    control-monitor-brightness-and-volume-with-ddcutil
 
     # Shell blur
     # gnomeExtensions.blur-my-shell

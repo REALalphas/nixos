@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cd /etc/nixos
+sudo journalctl --vacuum-time=2d
+sudo nix-env --delete-generations 14d
+sudo nix-store --gc --print-dead
+sudo nix-collect-garbage -d
+sudo nix-store --optimise

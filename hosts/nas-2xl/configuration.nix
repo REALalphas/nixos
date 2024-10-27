@@ -70,9 +70,14 @@
   # KVM Support
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.package = pkgs.qemu_kvm;
+  virtualisation.spiceUSBRedirection.enable = true;
 
   # Add session variables
   environment.sessionVariables = {
+    # QT Adwaita theme # See 12packages.nix
+    QT_WAYLAND_DECORATION = "adwaita";
+    QT_QPA_PLATFORMTHEME = "gnome";
+    # GStreamer, nautilus fix (File properties)
     GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0"
       (with pkgs.gst_all_1; [
         gst-plugins-good

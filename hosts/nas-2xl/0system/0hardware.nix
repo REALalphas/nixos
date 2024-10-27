@@ -23,4 +23,7 @@
       rocmPackages.clr.icd
     ];
   };
+
+  # Support for i2c devices (required for ddcutil and add user to "i2c" group)
+  hardware.i2c.enable = true;
 }

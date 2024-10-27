@@ -20,6 +20,10 @@
     ];
   };
 
+  # Virt Manager
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
   # aagl-gtk-on-nix
   programs.anime-game-launcher.enable = true; # Adds launcher and /etc/hosts rules
   programs.sleepy-launcher.enable = true; # ZZZ

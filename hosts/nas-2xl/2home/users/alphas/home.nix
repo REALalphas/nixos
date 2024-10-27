@@ -57,7 +57,6 @@ in
     };
   };
 
-
   # TODO: See flake.nix
   home.stateVersion = "24.05";
 

@@ -23,5 +23,16 @@
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   # Whether to enable ollama server for local large language models. # See alphas/packages.nix
-  services.ollama.enable = true;
+  services.ollama = {
+    package = pkgs.unstable.ollama;
+    enable = true;
+    acceleration = "rocm";
+  };
+
+  # Jellyfin (Home Media Server) # See 12packages.nix
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
+    user = "alphas";
+  };
 }
