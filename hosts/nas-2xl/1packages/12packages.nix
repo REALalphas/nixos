@@ -14,7 +14,7 @@
     nfs-utils
 
     # Sound recorder
-    gnome.gnome-sound-recorder
+    gnome-sound-recorder
 
     # Audio player
     # amberol (depr)
@@ -67,7 +67,7 @@
     scrcpy
 
     # BitTorrent Client
-    qbittorrent
+    unstable.qbittorrent
 
     # Simple & useful image compressor
     unstable.curtail
@@ -95,9 +95,6 @@
     jellyfin-web
     jellyfin-ffmpeg
 
-    # Cisco Packet Tracer
-    ciscoPacketTracer8
-
     # QT Adwaita theme # See configuration.nix
     adwaita-qt
     adwaita-qt6
@@ -105,6 +102,29 @@
     # QT Gnome platform
     qgnomeplatform
     qgnomeplatform-qt6
+
+    # NodeJS Runtime
+    nodejs_22
+
+    # NodeJS gyp
+    gobject-introspection
+    cairo
+    pkg-config
+
+    # Fuzzy find
+    fzf
+
+    # Room Eq Wizard
+    roomeqwizard
+
+    # Distrobox
+    distrobox
+
+    sing-box
+
+    czkawka
+
+    kdePackages.kdenlive
 
     ## Gnome Extensions
   ]) ++ (with pkgs.gnomeExtensions; [

@@ -59,7 +59,7 @@ in
 
 
   # TODO: See flake.nix
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;

@@ -17,7 +17,7 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Unsupported GPU Processing Mode / Davinci Resolve
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd

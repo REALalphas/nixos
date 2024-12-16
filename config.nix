@@ -5,7 +5,7 @@
 
 {
   # Configuration name and hostname
-  system.configurationName = "think-2xl";
+  system.configurationName = "nas-2xl";
   # NixOS version
-  system.nixosVersion = "24.05";
+  system.nixosVersion = "24.11";
 }

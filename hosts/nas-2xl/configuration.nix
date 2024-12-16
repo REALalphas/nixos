@@ -48,7 +48,6 @@
     gnome-connections
     # Browser
     epiphany
-  ]) ++ (with pkgs.gnome; [
     # Maps app
     gnome-maps
     # Contacts list
@@ -68,15 +67,31 @@
   ]);
 
   # KVM Support
-  virtualisation.libvirtd.enable = true;
-  virtualisation.libvirtd.qemu.package = pkgs.qemu_kvm;
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.package = pkgs.qemu_kvm;
+    # GPU Passthrough
+    qemu.ovmf.enable = true;
+  };
   virtualisation.spiceUSBRedirection.enable = true;
+  # Virt Manager
+  programs.virt-manager.enable = true;
+
+  # Podman Support
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
+
+  # Waydroid Support
+  virtualisation.waydroid.enable = true;
 
   # Add session variables
   environment.sessionVariables = {
     # QT Adwaita theme # See 12packages.nix
     QT_WAYLAND_DECORATION = "adwaita";
     QT_QPA_PLATFORMTHEME = "gnome";
+    QT_STYLE_OVERRIDE = "adwaita-dark";
     # GStreamer, nautilus fix (File properties)
     GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0"
       (with pkgs.gst_all_1; [
@@ -88,8 +103,16 @@
   };
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.rocmSupport = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    rocmSupport = true;
+    permittedInsecurePackages = [
+      "dotnet-runtime-wrapped-6.0.36"
+      "dotnet-runtime-6.0.36"
+      "dotnet-sdk-wrapped-6.0.428"
+      "dotnet-sdk-6.0.428"
+    ];
+  };
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   nixpkgs.overlays = overlays;
 

@@ -20,13 +20,18 @@
   services.duplicati.user = "alphas"; # Run only for user you want to backup, run as root at you risk
 
   # Packages udev (rules)
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
 
   # Whether to enable ollama server for local large language models. # See alphas/packages.nix
   services.ollama = {
-    package = pkgs.unstable.ollama;
     enable = true;
+    host = "0.0.0.0";
     acceleration = "rocm";
+    openFirewall = true;
+    environmentVariables = {
+      HCC_AMDGPU_TARGET = "gfx1101";
+    };
+    rocmOverrideGfx = "11.0.1";
   };
 
   # Jellyfin (Home Media Server) # See 12packages.nix

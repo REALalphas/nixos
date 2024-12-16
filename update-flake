@@ -3,4 +3,4 @@
 sudo rsync -av --progress --exclude='.git' --update ./ /etc/nixos/
 
 cd /etc/nixos
-sudo nixos-rebuild switch --flake .
+sudo nixos-rebuild switch --fast --flake .

@@ -8,7 +8,7 @@ let
 in
 {
   imports = [
-    inputs.spicetify-nix.homeManagerModules.default
+    # inputs.spicetify-nix.homeManagerModules.default
 
     ./packages.nix
     ./programs.nix
@@ -58,7 +58,8 @@ in
   };
 
   # TODO: See flake.nix
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
+  home.enableNixpkgsReleaseCheck = false;
 
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;

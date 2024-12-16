@@ -20,5 +20,5 @@
   services.duplicati.user = "alphas"; # Run only for user you want to backup, run as root at you risk
 
   # Packages udev (rules)
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
 }

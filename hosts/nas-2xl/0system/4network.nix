@@ -20,7 +20,7 @@
 
   ## Firewall
   # Firewall is turned on by default, so this line is not necessary
-  networking.firewall.enable = true;
+  networking.firewall.enable = false;
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

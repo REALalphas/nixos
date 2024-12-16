@@ -62,6 +62,7 @@
       # Terminal settings
       "terminal.integrated.smoothScrolling" = true;
       "terminal.integrated.scrollback" = 3000;
+      "terminal.integrated.fontSize" = 11;
       # Git settings
       "git.autofetch" = true;
       # Make non native
@@ -70,37 +71,37 @@
   };
 
   # Spotify with mods
-  programs.spicetify =
-    let
-      spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
-    in
-    {
-      enable = true;
-      theme = {
-        name = "Override";
+  # programs.spicetify =
+  #   let
+  #     spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+  #   in
+  #   {
+  #     enable = true;
+  #     theme = {
+  #       name = "Override";
 
-        src = spicePkgs.themes.spotifyNoPremium.src;
-        requiredExtensions = [ spicePkgs.extensions.adblock ];
+  #       src = spicePkgs.themes.spotifyNoPremium.src;
+  #       requiredExtensions = [ spicePkgs.extensions.adblock ];
 
-        injectCss = true;
-        replaceColors = false;
-        sidebarConfig = false;
-        # homeConfig = true;
-        overwriteAssets = true;
-        additionalCss = ''
-          * {
-          box-shadow: 0 0 1px solid #fff;
-          }
-        '';
-      };
+  #       injectCss = true;
+  #       replaceColors = false;
+  #       sidebarConfig = false;
+  #       # homeConfig = true;
+  #       overwriteAssets = true;
+  #       additionalCss = ''
+  #         * {
+  #         box-shadow: 0 0 1px solid #fff;
+  #         }
+  #       '';
+  #     };
 
-      enabledExtensions = with spicePkgs.extensions; [
-        adblock
-        betterGenres
-        history
-        shuffle
-        songStats
-        hidePodcasts
-      ];
-    };
+  #     enabledExtensions = with spicePkgs.extensions; [
+  #       adblock
+  #       betterGenres
+  #       history
+  #       shuffle
+  #       songStats
+  #       hidePodcasts
+  #     ];
+  #   };
 }

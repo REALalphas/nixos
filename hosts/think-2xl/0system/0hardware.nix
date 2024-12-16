@@ -11,11 +11,11 @@
     ];
 
   # OpenTabletDriver
-  hardware.opentabletdriver.enable = true;
+  # hardware.opentabletdriver.enable = true;
 
   # Intel CPU Microcode
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  
+
   # Unsupported GPU Processing Mode / Davinci Resolve
   hardware.opengl = {
     enable = true;

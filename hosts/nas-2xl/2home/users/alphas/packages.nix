@@ -6,7 +6,7 @@
   home.packages = (with pkgs; [
     # osu!lazer
     # inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
-    # unstable.osu-lazer-bin
+    unstable.osu-lazer-bin
 
     gnome-frog
 
@@ -134,8 +134,10 @@
 
     moonlight-qt
 
-    ## nix-gaming
-  ]) ++ (with inputs.nix-gaming.packages.${pkgs.system}; [
-    osu-lazer-bin
+    # Crypto Wallet
+    exodus
+
+    # Spotify Music Client
+    spotify
   ]);
 }
