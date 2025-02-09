@@ -9,14 +9,14 @@
     nixpkgs-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-23-11.url = "github:nixos/nixpkgs/nixos-23.11";
 
-    # # Spicetify-Nix
+    # Spicetify-Nix a Spotify mod client (Now broken) (Not Recomended)
     # spicetify-nix = {
     #   url = "github:Gerg-L/spicetify-nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    # Gaming related stuff for Nix and NixOS
-    nix-gaming.url = "github:fufexan/nix-gaming";
+    # Gaming related stuff for Nix and NixOS (Not Recomended)
+    # nix-gaming.url = "github:fufexan/nix-gaming";
 
     # aagl-gtk-on-nix
     aagl.url = "github:ezKEa/aagl-gtk-on-nix/release-24.11";
