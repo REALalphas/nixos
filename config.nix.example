@@ -1,0 +1,13 @@
+# 
+# FIXME: Rename this file to config.nix and change the configurationName to your hostname.
+# 
+{ lib, pkgs, ... }:
+
+{
+  # Configuration name and hostname
+  # FIXME: Change this to your hostname!
+  system.configurationName = "<host_here>";
+  # NixOS version
+  # FIXME: Change this to your desired NixOS version!
+  system.nixosVersion = "24.11";
+}
