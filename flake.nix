@@ -123,6 +123,8 @@
               networking.hostName = hostname;
               system.stateVersion = stateVersion;
               nix.settings.experimental-features = [ "nix-command" "flakes" ];
+              # For adding yonix to path and custom bins in your path
+              environment.localBinInPath = true;
             }
           ];
         };

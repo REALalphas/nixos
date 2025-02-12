@@ -1,0 +1,472 @@
+#!/usr/bin/env bash
+
+VERSION="0.52"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+# Config file location
+NIX_DIR_FILE="$HOME/.config/yonix/nix-dir"
+
+# Create config directory if it doesn't exist
+mkdir -p "$HOME/.config/yonix"
+
+# Function to save nix directory
+save_nix_dir() {
+    echo "$(pwd)" > "$NIX_DIR_FILE"
+}
+
+# Function to get nix directory
+get_nix_dir() {
+    if [ -f "$NIX_DIR_FILE" ]; then
+        cat "$NIX_DIR_FILE"
+    else
+        echo "$HOME/.config/nixos"
+    fi
+}
+
+# Rename reset directory function
+reset_nix_dir() {
+    if [ -f "$NIX_DIR_FILE" ]; then
+        rm "$NIX_DIR_FILE"
+        log_success "Reset NixOS configuration directory to default"
+    else
+        log_warning "No saved directory configuration found"
+    fi
+}
+
+# Logging functions
+log_info() { 
+    [ "$quiet_mode" = false ] && echo -e "${BLUE}[INFO]${NC} $1"
+}
+log_success() { 
+    [ "$quiet_mode" = false ] && echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+log_warning() { 
+    [ "$quiet_mode" = false ] && echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+log_error() { 
+    echo -e "${RED}[ERROR]${NC} $1" >&2
+}
+
+# Modified check_sudo to properly pass arguments
+check_sudo() {
+    if [ "$EUID" -ne 0 ]; then
+        log_info "Elevating privileges..."
+        exec sudo -E "$0" "${ORIGINAL_ARGS[@]}"
+    fi
+}
+
+# Store original arguments
+ORIGINAL_ARGS=("$@")
+
+# Braille spinner frames
+SPINNER_FRAMES=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)
+
+# Improved spinner function
+spinner() {
+    local pid=$1
+    local message="${2:-Processing}"
+    local delay=0.08
+    local frame=0
+
+    # Clear line and show initial message
+    printf "\r%-80s" ""
+    printf "\r${BLUE}⠋${NC} %s" "$message"
+
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+        frame=$(( (frame + 1) % 10 ))
+        printf "\r${BLUE}%s${NC} %s" "${SPINNER_FRAMES[$frame]}" "$message"
+        sleep $delay
+    done
+    printf "\r${GREEN}✓${NC} %s\n" "$message"
+}
+
+# Run command with spinner for non-verbose operations
+run_with_spinner() {
+    local cmd="$1"
+    local msg="$2"
+    local show_output="${3:-false}"
+    
+    if [ "$quiet_mode" = true ]; then
+        eval "$cmd" > /dev/null 2>&1 || handle_error "Command failed: $cmd"
+    elif [ "$show_output" = true ]; then
+        eval "$cmd"
+    else
+        eval "$cmd" > /dev/null 2>&1 & spinner $! "$msg"
+    fi
+}
+
+# Help message
+show_help() {
+    cat << EOF
+Yonix - NixOS System Management Utility v${VERSION}
+
+Usage: 
+    yonix <command> [options]
+
+Commands:
+    update, u        Update the current system configuration
+    upgrade, U       Upgrade (inputs) and update the current system configuration
+    clean, c         Clean up old generations and cache
+    trace, t         Rebuild with trace information
+    build, b         Build a new system configuration
+    dir, d           Show current NixOS configuration directory
+    reset-dir, rd    Reset location of configuration directory to default
+
+Options:
+    --no-flakes   Run without flakes support
+    -h, --help    Show this help message
+    -v, --version Show version information
+    -q, --quiet   Suppress spinner and progress output
+
+Examples:
+    yonix update              # Update system with flakes
+    yonix u --no-flakes       # Update system without flakes
+    yonix upgrade -q          # Quiet upgrade
+    yonix build               # Build new system
+    yonix dir                 # Show config directory
+    yonix reset-dir           # Reset directory configuration
+
+EOF
+}
+
+# Add function to check for required configuration files
+check_nix_config() {
+    if [ ! -f "flake.nix" ] && [ ! -f "configuration.nix" ]; then
+        handle_error "No flake.nix or configuration.nix found in $(pwd)"
+    fi
+}
+
+# Error handling
+handle_error() {
+    log_error "An error occurred: $1"
+    exit 1
+}
+
+check_rsync() {
+    if ! command -v rsync &> /dev/null; then
+        log_warning "rsync is not installed"
+        echo -e "${YELLOW}Would you like to enter nix-shell with rsync? (y/n)${NC}"
+        read -r answer
+        if [[ "$answer" == "y" ]]; then
+            nix-shell -p rsync
+        else
+            handle_error "rsync is required for this operation"
+        fi
+    fi
+}
+
+# Operation functions with progress indication
+update_system() {
+    log_info "Starting system update..."
+    check_sudo
+    check_rsync
+    check_nix_config
+    
+    save_nix_dir
+    # Run rsync with spinner
+    run_with_spinner "sudo rsync -av --exclude='.git' --update $(pwd)/ /etc/nixos/" "Syncing configuration" false
+    cd /etc/nixos || handle_error "Failed to change directory"
+
+    # Run rebuild showing output
+    if [ "$use_flakes" = true ]; then
+        log_info "Rebuilding system with flakes..."
+        sudo nixos-rebuild switch --fast --flake .
+    else
+        log_info "Rebuilding system..."
+        sudo nixos-rebuild switch --fast
+    fi
+    log_success "System update completed"
+}
+
+upgrade_system() {
+    log_info "Starting system upgrade..."
+    check_sudo
+    check_rsync
+    check_nix_config
+    
+    save_nix_dir
+    # Run rsync with spinner
+    run_with_spinner "sudo rsync -av --exclude='.git' --update $(pwd)/ /etc/nixos/" "Syncing configuration" false
+    cd /etc/nixos || handle_error "Failed to change directory"
+
+    # Run upgrade showing output
+    if [ "$use_flakes" = true ]; then
+        log_info "Updating flake..."
+        sudo nix flake update
+        log_info "Upgrading system with flakes..."
+        sudo nixos-rebuild switch --upgrade --flake .
+    else
+        log_info "Upgrading system..."
+        sudo nixos-rebuild switch --upgrade
+    fi
+    log_success "System upgrade completed"
+}
+
+clean_system() {
+    log_info "Starting system cleanup..."
+    check_sudo
+    cd /etc/nixos || handle_error "Failed to change directory"
+
+    run_with_spinner "sudo journalctl --vacuum-time=2d" "Cleaning journals" false
+    run_with_spinner "sudo nix-env --delete-generations 14d" "Removing old generations" false
+    run_with_spinner "sudo nix-store --gc --print-dead" "Collecting garbage from nix-store" false
+    run_with_spinner "sudo nix-collect-garbage -d" "Removing garbage" false
+    run_with_spinner "sudo nix-store --optimise" "Optimizing store" false
+
+    log_success "System cleanup completed"
+}
+
+trace_build() {
+    log_info "Starting trace build..."
+    check_sudo
+    check_rsync
+    check_nix_config
+    
+    save_nix_dir
+    # Run setup commands with spinner
+    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing directory" false
+    run_with_spinner "sudo rsync -av --exclude='.git' --update ./ /etc/nixos/" "Syncing configuration" false
+    cd /etc/nixos || handle_error "Failed to change directory"
+
+    # Run trace build showing output
+    if [ "$use_flakes" = true ]; then
+        log_info "Building with trace (flakes)..."
+        sudo nixos-rebuild switch --flake . --show-trace
+    else
+        log_info "Building with trace..."
+        sudo nixos-rebuild switch --show-trace
+    fi
+    log_success "Trace build completed"
+}
+
+build_new() {
+    log_info "Starting new build..."
+    check_sudo
+    check_rsync
+    check_nix_config
+    
+    save_nix_dir
+    # Run setup commands with spinner
+    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing directory" false
+    run_with_spinner "sudo rsync -av --exclude='.git' --update ./ /etc/nixos/" "Syncing configuration" false
+    
+    read -p "Enter hostname: " hostname
+    sudo hostname $hostname || handle_error "Failed to set hostname"
+    cd /etc/nixos || handle_error "Failed to change directory"
+
+    # Run build showing output
+    if [ "$use_flakes" = true ]; then
+        log_info "Building new system with flakes..."
+        sudo nixos-rebuild switch --flake .
+    else
+        log_info "Building new system..."
+        sudo nixos-rebuild switch
+    fi
+    log_success "New build completed"
+}
+
+# Add new function to show nix directory
+show_nix_dir() {
+    local dir=$(get_nix_dir)
+    echo -e "${BLUE}NixOS configuration directory:${NC} $dir"
+    if [ -f "$dir/flake.nix" ]; then
+        echo -e "${GREEN}✓${NC} Flake configuration found"
+    elif [ -f "$dir/configuration.nix" ]; then
+        echo -e "${GREEN}✓${NC} Traditional configuration found"
+    else
+        echo -e "${YELLOW}!${NC} No configuration files found"
+    fi
+}
+
+# Default settings
+use_flakes=true
+quiet_mode=false
+command=""
+
+# Add function to check for updates in current directory
+check_for_updates() {
+    local current_dir="$(pwd)"
+    local current_version="$VERSION"
+    local newest_version=""
+    local newest_file=""
+
+    # Search for yonix files in current directory and subdirectories
+    while IFS= read -r file; do
+        if [[ -f "$file" && -x "$file" ]]; then
+            local ver=$(grep "^VERSION=" "$file" | cut -d'"' -f2)
+            if [[ ! -z "$ver" && "$ver" > "$current_version" ]]; then
+                newest_version="$ver"
+                newest_file="$file"
+            fi
+        fi
+    done < <(find "$current_dir" -name "yonix" 2>/dev/null)
+
+    if [[ ! -z "$newest_file" ]]; then
+        log_info "Found newer version v${newest_version} in ${newest_file}"
+        echo -e "${YELLOW}Would you like to update? (y/n)${NC}"
+        read -r answer
+        if [[ "$answer" == "y" ]]; then
+            cp "$newest_file" "$HOME/.local/bin/yonix"
+            chmod +x "$HOME/.local/bin/yonix"
+            log_success "Updated to v${newest_version}"
+            exec "$HOME/.local/bin/yonix" "${ORIGINAL_ARGS[@]}"
+        fi
+    fi
+}
+
+# Modify ensure_installed to include update check
+ensure_installed() {
+    local target_dir="$HOME/.local/bin"
+    local target_path="$target_dir/yonix"
+    local current_path="$(realpath "$0")"
+    local current_version="$VERSION"
+    local installed_version=""
+
+    # Check if already installed and get version
+    if [ -f "$target_path" ]; then
+        installed_version=$(grep "^VERSION=" "$target_path" | cut -d'"' -f2)
+    fi
+
+    # Create ~/.local/bin if it doesn't exist
+    if [ ! -d "$target_dir" ]; then
+        mkdir -p "$target_dir"
+    fi
+
+    # Add ~/.local/bin to PATH if not already present
+    if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+        export PATH="$HOME/.local/bin:$PATH"
+    fi
+
+    # Install script if not installed or different version
+    if [ "$current_path" != "$target_path" ] || [ "$current_version" != "$installed_version" ]; then
+        cp "$current_path" "$target_path"
+        chmod +x "$target_path"
+        log_success "Installed yonix v${VERSION} to $target_path"
+        if [ "$current_path" != "$target_path" ]; then
+            exec "$target_path" "${ORIGINAL_ARGS[@]}"
+        fi
+    fi
+
+    # Check for updates in current directory
+    check_for_updates
+}
+
+# Move ensure_installed before sudo check to allow local installation first
+ensure_installed "$@"
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        update|u)
+            command="update"
+            shift
+            ;;
+        upgrade|U)
+            command="upgrade"
+            shift
+            ;;
+        clean|c)
+            command="clean"
+            shift
+            ;;
+        trace|t)
+            command="trace"
+            shift
+            ;;
+        build|b)
+            command="build"
+            shift
+            ;;
+        dir|d)
+            command="dir"
+            shift
+            ;;
+        reset-dir|rd)
+            command="reset-dir"
+            shift
+            ;;
+        --no-flakes)
+            use_flakes=false
+            shift
+            ;;
+        -q|--quiet)
+            quiet_mode=true
+            shift
+            ;;
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        -v|--version)
+            echo "Yonix v${VERSION}"
+            exit 0
+            ;;
+        *)
+            log_error "Unknown argument: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+# Modify spinner function if quiet mode is enabled
+if [ "$quiet_mode" = true ]; then
+    spinner() { 
+        local pid=$1
+        while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do sleep 0.1; done
+    }
+fi
+
+# Add directory check before executing commands
+if [ ! -z "$command" ]; then
+    if [ -f "flake.nix" ] || [ -f "configuration.nix" ]; then
+        true # We're in the right place
+    else
+        nix_dir=$(get_nix_dir)
+        if [ -d "$nix_dir" ]; then
+            cd "$nix_dir" || handle_error "Failed to change to NixOS configuration directory: $nix_dir"
+            # log_info "Changing to nix directory: $nix_dir"
+        else
+            handle_error "No NixOS configuration found in current directory and no valid configuration directory set"
+        fi
+    fi
+fi
+
+# Execute requested command
+case $command in
+    update)
+        update_system
+        ;;
+    upgrade)
+        upgrade_system
+        ;;
+    clean)
+        clean_system
+        ;;
+    trace)
+        trace_build
+        ;;
+    build)
+        build_new
+        ;;
+    dir)
+        show_nix_dir
+        ;;
+    reset-dir)
+        reset_nix_dir
+        ;;
+esac
+
+# Execute command
+if [ -z "$command" ]; then
+    show_help
+    log_error "No command specified"
+    exit 1
+fi

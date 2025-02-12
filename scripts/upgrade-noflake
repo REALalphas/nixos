@@ -1,6 +1,8 @@
 #!/bin/sh
+echo "OLD! Use yonix!"
+
 
 sudo rsync -av --progress --exclude='.git' --update ./ /etc/nixos/
 
 cd /etc/nixos
-sudo nixos-rebuild switch --fast --flake .
+sudo nixos-rebuild switch --upgrade

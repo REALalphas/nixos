@@ -1,4 +1,6 @@
 #!/bin/sh
+echo "OLD! Use yonix!"
+
 
 cd /etc/nixos
 sudo journalctl --vacuum-time=2d

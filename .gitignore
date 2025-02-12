@@ -1,2 +1,3 @@
 # Ignore config files that contain unique information for each machine
 config.nix
+.nix-dir
