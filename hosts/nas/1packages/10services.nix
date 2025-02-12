@@ -7,14 +7,14 @@
   services.printing.enable = false;
 
   # Open WebUI Ollama web wrapper
-  services.open-webui.package = pkgs.unstable.open-webui;
-  services.open-webui.enable = true;
-  services.open-webui.environment = {
-    ANONYMIZED_TELEMETRY = "False";
-    DO_NOT_TRACK = "True";
-    SCARF_NO_ANALYTICS = "True";
-    # WEBUI_AUTH = "False";
-  };
+  # services.open-webui.package = pkgs.open-webui;
+  # services.open-webui.enable = true;
+  # services.open-webui.environment = {
+  #   ANONYMIZED_TELEMETRY = "False";
+  #   DO_NOT_TRACK = "True";
+  #   SCARF_NO_ANALYTICS = "True";
+  #   # WEBUI_AUTH = "False";
+  # };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;

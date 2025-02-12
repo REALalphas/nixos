@@ -97,17 +97,17 @@
     # flutter
 
     ## Raspberry Pi Pico Development
-    gcc               # C/C++ compiler
-    go                # Go programming language
-    elixir            # Elixir programming language
-    libclang          # LLVM C language frontend
-    python3           # Python programming language
-    libusb1           # USB device access library
+    # gcc               # C/C++ compiler
+    # go                # Go programming language
+    # elixir            # Elixir programming language
+    # libclang          # LLVM C language frontend
+    # python3           # Python programming language
+    # libusb1           # USB device access library
     # openocd           # Original OpenOCD
-    openocd-rp2040    # Debug adapter for RP2040
-    pico-sdk          # Raspberry Pi Pico SDK
-    picotool          # Raspberry Pi Pico utility
-    ninja             # Build system
+    # openocd-rp2040    # Debug adapter for RP2040
+    # pico-sdk          # Raspberry Pi Pico SDK
+    # picotool          # Raspberry Pi Pico utility
+    # ninja             # Build system
 
     ## Web Development
     # NodeJS Runtime

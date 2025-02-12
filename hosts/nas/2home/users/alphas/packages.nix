@@ -82,6 +82,9 @@
     # Note taking application
     obsidian
 
+    # Remote desktop
+    unstable.rustdesk-flutter
+
     ### Finance
     # Cryptocurrency wallet
     # exodus
