@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }:
 {
   # Mount web-2xl NFS share # See 12packages.nix # See 10services.nix

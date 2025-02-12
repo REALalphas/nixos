@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }:
 {
   # Enable sound with pipewire.
@@ -22,7 +23,10 @@
     extraConfig = {
       pipewire."92-low-latency" = {
         context.properties = {
-          default.clock.allowed-rates = [ 48000 96000 ];
+          default.clock.allowed-rates = [
+            48000
+            96000
+          ];
           default.clock.rate = 96000;
           default.clock.quantum = 128;
           default.clock.min-quantum = 128;

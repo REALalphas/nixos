@@ -1,11 +1,8 @@
-{ lib
-, pkgs
-, ...
-}:
+{ lib, pkgs, ... }:
 
 {
   # Configuration name and hostname
-  system.configurationName = "nas";
+  system.configurationName = "tv";
   # NixOS version
   system.nixosVersion = "24.11";
 }

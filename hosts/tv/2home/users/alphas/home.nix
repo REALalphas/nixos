@@ -1,7 +1,8 @@
-{ inputs
-, config
-, pkgs
-, ...
+{
+  inputs,
+  config,
+  pkgs,
+  ...
 }:
 let
   username = "alphas";

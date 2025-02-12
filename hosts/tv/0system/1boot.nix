@@ -1,14 +1,21 @@
-{ config
-, lib
-, pkgs
-, modulesPath
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
 }:
 {
   ## Boot
   # Initrd (First modules to load when starting linux)
   boot.initrd = {
-    availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+    availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "uas"
+      "sd_mod"
+      "rtsx_pci_sdmmc"
+    ];
     kernelModules = [ ];
   };
   # Bootloader
@@ -38,8 +45,10 @@
       # "vfio_iommu_type1"
       # "vfio_pci"
       # "vfio_virqfd"
-      # KVM Support
-      "kvm-amd"
+      # AMD KVM Support
+      # "kvm-amd"
+      # Intel KVM Support
+      "kvm-intel"
       "v4l2loopback"
     ];
     extraModulePackages = with config.boot.kernelPackages; [

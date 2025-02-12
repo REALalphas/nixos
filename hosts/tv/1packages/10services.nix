@@ -1,7 +1,4 @@
-{ config
-, pkgs
-, ...
-}:
+{ config, pkgs, ... }:
 {
   # Disable CUPS to print documents.
   services.printing.enable = false;
@@ -31,6 +28,8 @@
 
   # Packages udev (rules)
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
+  # Packages dbus (rules)
+  services.dbus.packages = with pkgs; [ gnome-remote-desktop ];
 
   # Whether to enable ollama server for local large language models. # See alphas/packages.nix
   # services.ollama = {
@@ -54,4 +53,21 @@
   # LACT (Linux AMDGPU Controller) # See 12packages.nix
   # systemd.packages = with pkgs; [ lact ];
   # systemd.services.lactd.wantedBy = ["multi-user.target"];
+
+  # Enable automatic login for the user.
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "alphas";
+
+  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+
+  # Enable gnome remote desktop
+  services.gnome.gnome-remote-desktop.enable = true;
+
+  # Enable xdg portal for screen sharing
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
+  };
 }

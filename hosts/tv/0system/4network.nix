@@ -1,8 +1,9 @@
-{ config
-, lib
-, pkgs
-, modulesPath
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
 }:
 {
   # !!! See /flake.nix

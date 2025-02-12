@@ -1,36 +1,29 @@
-{ config
-, lib
-, pkgs
-, modulesPath
-, overlays
-, ...
-}:
-{
-  imports =
-    [
-      ./0system/0hardware.nix
-      ./0system/1boot.nix
-      ./0system/2filesystem.nix
-      ./0system/3locale.nix
-      ./0system/4network.nix
-      ./0system/5systemd.nix
-      ./0system/6audio.nix
+{ config, lib, pkgs, modulesPath, overlays, ... }: {
+  imports = [
+    ./0system/0hardware.nix
+    ./0system/1boot.nix
+    ./0system/2filesystem.nix
+    ./0system/3locale.nix
+    ./0system/4network.nix
+    ./0system/5systemd.nix
+    ./0system/6audio.nix
 
-      ./1packages/10services.nix
-      ./1packages/11programs.nix
-      ./1packages/12packages.nix
-      ./1packages/13fonts.nix
+    ./1packages/10services.nix
+    ./1packages/11programs.nix
+    ./1packages/12packages.nix
+    ./1packages/13fonts.nix
 
-      ./2home/20users.nix
-    ];
+    ./2home/20users.nix
+  ];
 
   ## GNOME DE
   # Enable the X11 windowing system. (Also wayland)
   services.xserver.enable = true;
-  services.xserver.excludePackages = with pkgs; [
-    # Simple terminal
-    pkgs.xterm
-  ];
+  services.xserver.excludePackages = with pkgs;
+    [
+      # Simple terminal
+      pkgs.xterm
+    ];
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
@@ -41,7 +34,7 @@
     # Welcome tour
     gnome-tour
     # Camera app
-    # snapshot
+    snapshot
     # Gnome password manager
     gnome-secrets
     # VNC/RDP Client
@@ -63,7 +56,7 @@
     # Gnome password manager and encryption keys
     seahorse
     # Help app
-    # yelp
+    yelp
   ]);
 
   # KVM Support
@@ -93,8 +86,8 @@
     QT_QPA_PLATFORMTHEME = "gnome";
     QT_STYLE_OVERRIDE = "adwaita-dark";
     # GStreamer, nautilus fix (File properties)
-    GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0"
-      (with pkgs.gst_all_1; [
+    GST_PLUGIN_SYSTEM_PATH_1_0 =
+      lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
         gst-plugins-good
         gst-plugins-bad
         gst-plugins-ugly

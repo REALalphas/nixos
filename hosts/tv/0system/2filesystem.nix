@@ -1,30 +1,26 @@
-{ config
-, lib
-, pkgs
-, modulesPath
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
 }:
 {
   fileSystems = {
-    "/" =
-      {
-        device = "/dev/disk/by-uuid/49bd5c79-52bd-43bc-b20f-7ba70502bae9";
-        fsType = "btrfs";
-        options = [ "subvol=@" ];
-      };
-    "/boot" =
-      {
-        device = "/dev/disk/by-uuid/B1AE-26E6";
-        fsType = "vfat";
-        options = [ "fmask=0022" "dmask=0022" ];
-      };
-    "/home" =
-      {
-        device = "/dev/disk/by-uuid/4068593f-6a2a-4b81-9517-1d2231d4780d";
-        fsType = "btrfs";
-      };
+    "/" = {
+      device = "/dev/disk/by-uuid/579f330c-d694-4809-aa50-fc8f486af63f";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/0378-6789";
+      fsType = "vfat";
+      options = [
+        "fmask=0077"
+        "dmask=0077"
+      ];
+    };
   };
 
-  swapDevices = [ ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/188be88b-bcaa-4a8a-a0c3-bc62d6f1886b"; } ];
 
 }
