@@ -2,7 +2,8 @@
 
 {
   # Configuration name and hostname
-  system.configurationName = "tv";
+  # FIXME: Change this to your hostname!
+  system.configurationName = "<host_here>";
   # NixOS version
   system.nixosVersion = "24.11";
 }

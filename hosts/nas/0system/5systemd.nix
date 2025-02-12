@@ -11,7 +11,7 @@
         Options = "noatime";
       };
       # TODO: Set IP for web-2xl
-      what = "192.168.2.3:/mnt/M1/user/alphas";
+      what = "web.xl:/mnt/M1/user/alphas";
       where = "/mnt/web-2xl/alphas";
     }
   ];
@@ -25,4 +25,8 @@
       where = "/mnt/web-2xl/alphas";
     }
   ];
+
+  # LACT (Linux AMDGPU Controller) # See 12packages.nix
+  systemd.packages = with pkgs; [ lact ];
+  systemd.services.lactd.wantedBy = ["multi-user.target"];
 }
