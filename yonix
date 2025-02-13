@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.53"
+VERSION="0.60"
 
 # Colors
 RED='\033[0;31m'
@@ -91,14 +91,25 @@ run_with_spinner() {
     local cmd="$1"
     local msg="$2"
     local show_output="${3:-false}"
+    local result=0
     
     if [ "$quiet_mode" = true ]; then
-        eval "$cmd" > /dev/null 2>&1 || handle_error "Command failed: $cmd"
+        eval "$cmd" > /dev/null 2>&1 || result=$?
     elif [ "$show_output" = true ]; then
-        eval "$cmd"
+        eval "$cmd" || result=$?
     else
         eval "$cmd" > /dev/null 2>&1 & spinner $! "$msg"
+        wait $! || result=$?
     fi
+    
+    [ $result -ne 0 ] && handle_error "Command failed: $cmd (Exit code: $result)"
+    return $result
+}
+
+# Helper function to escape paths
+escape_path() {
+    local path="$1"
+    printf "%q" "$path"
 }
 
 # Help message
@@ -170,19 +181,26 @@ update_system() {
     check_nix_config
     
     save_nix_dir
-    # Run rsync with spinner
-    run_with_spinner "sudo rsync -av --exclude='.git' --update $(pwd)/ /etc/nixos/" "Syncing configuration" false
+    local current_dir=$(escape_path "$(pwd)")
+    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
     cd /etc/nixos || handle_error "Failed to change directory"
 
     # Run rebuild showing output
     if [ "$use_flakes" = true ]; then
         log_info "Rebuilding system with flakes..."
-        sudo nixos-rebuild switch --fast --flake .
+        if sudo nixos-rebuild switch --fast --flake .; then
+            log_success "System update completed"
+        else
+            handle_error "System update failed"
+        fi
     else
         log_info "Rebuilding system..."
-        sudo nixos-rebuild switch --fast
+        if sudo nixos-rebuild switch --fast; then
+            log_success "System update completed"
+        else
+            handle_error "System update failed"
+        fi
     fi
-    log_success "System update completed"
 }
 
 upgrade_system() {
@@ -192,21 +210,31 @@ upgrade_system() {
     check_nix_config
     
     save_nix_dir
-    # Run rsync with spinner
-    run_with_spinner "sudo rsync -av --exclude='.git' --update $(pwd)/ /etc/nixos/" "Syncing configuration" false
+    local current_dir=$(escape_path "$(pwd)")
+    # Run rsync with spinner and clearer message
+    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
     cd /etc/nixos || handle_error "Failed to change directory"
 
     # Run upgrade showing output
     if [ "$use_flakes" = true ]; then
         log_info "Updating flake..."
-        sudo nix flake update
+        if ! sudo nix flake update; then
+            handle_error "Flake update failed"
+        fi
         log_info "Upgrading system with flakes..."
-        sudo nixos-rebuild switch --upgrade --flake .
+        if sudo nixos-rebuild switch --upgrade --flake .; then
+            log_success "System upgrade completed"
+        else
+            handle_error "System upgrade failed"
+        fi
     else
         log_info "Upgrading system..."
-        sudo nixos-rebuild switch --upgrade
+        if sudo nixos-rebuild switch --upgrade; then
+            log_success "System upgrade completed"
+        else
+            handle_error "System upgrade failed"
+        fi
     fi
-    log_success "System upgrade completed"
 }
 
 clean_system() {
@@ -230,9 +258,10 @@ trace_build() {
     check_nix_config
     
     save_nix_dir
-    # Run setup commands with spinner
-    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing directory" false
-    run_with_spinner "sudo rsync -av --exclude='.git' --update ./ /etc/nixos/" "Syncing configuration" false
+    local current_dir=$(escape_path "$(pwd)")
+    # Run setup commands with spinner and clearer messages
+    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing /etc/nixos directory" false
+    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
     cd /etc/nixos || handle_error "Failed to change directory"
 
     # Run trace build showing output
@@ -253,9 +282,10 @@ build_new() {
     check_nix_config
     
     save_nix_dir
-    # Run setup commands with spinner
-    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing directory" false
-    run_with_spinner "sudo rsync -av --exclude='.git' --update ./ /etc/nixos/" "Syncing configuration" false
+    local current_dir=$(escape_path "$(pwd)")
+    # Run setup commands with spinner and clearer messages
+    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing /etc/nixos directory" false
+    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
     
     read -p "Enter hostname: " hostname
     sudo hostname $hostname || handle_error "Failed to set hostname"

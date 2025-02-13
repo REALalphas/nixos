@@ -1,5 +1,7 @@
-{ config
+{ inputs
+, config
 , pkgs
+, stateVersion
 , ...
 }:
 let
