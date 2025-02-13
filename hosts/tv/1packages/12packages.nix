@@ -2,8 +2,9 @@
 {
   # !!! List packages installed in SYSTEM
   # To search run: `$ nix search wget`
-  environment.systemPackages =
-    (with pkgs; [
+  environment.systemPackages = (
+    with pkgs;
+    [
       ### System Utilities
       # Text editor (cli)
       nano
@@ -173,21 +174,6 @@
 
       # Ladybird Browser (Fork from SerenityOS)
       # unstable.ladybird
-
-      ### GNOME Extensions
-    ])
-    ++ (with pkgs.gnomeExtensions; [
-      # Tray icons
-      appindicator
-      # Shell blur
-      blur-my-shell
-      gsconnect
-      # DDC controll
-      control-monitor-brightness-and-volume-with-ddcutil
-
-      # Shell blur
-      # gnomeExtensions.blur-my-shell
-      # FIXME: Geminiai
-      # gnomeExtensions.gemini-ai
-    ]);
+    ]
+  );
 }

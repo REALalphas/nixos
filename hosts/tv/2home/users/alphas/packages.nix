@@ -1,8 +1,7 @@
 { inputs, pkgs, ... }:
 {
-  home.packages = (
-    with pkgs;
-    [
+  home.packages =
+    (with pkgs; [
       ### Web Browsers
       # Vivaldi web browser
       # unstable.vivaldi
@@ -81,6 +80,25 @@
       ### Finance
       # Cryptocurrency wallet
       # exodus
-    ]
-  );
+
+      ### GNOME Extensions
+    ])
+    ++ (with pkgs.gnomeExtensions; [
+      # Tray icons
+      appindicator
+      # Shell blur
+      blur-my-shell
+      # Connector for phone
+      gsconnect
+
+    ]);
+  # Enabled extensions
+  dconf.settings."org/gnome/shell" = {
+    disable-user-extensions = false;
+    enabled-extensions = with pkgs.gnomeExtensions; [
+      blur-my-shell.extensionUuid
+      gsconnect.extensionUuid
+      appindicator.extensionUuid
+    ];
+  };
 }

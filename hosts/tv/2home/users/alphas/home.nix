@@ -24,14 +24,10 @@ in
     "org/gnome/desktop/peripherals/mouse".accel-profile = "flat";
     # Titlebar actions and placement
     "org/gnome/desktop/wm/preferences".button-layout = "appmenu:minimize,close";
-    # Font for titlebar
-    "org/gnome/desktop/wm/preferences".titlebar-font = "Cantarell Bold 11";
-
     # Hot Corner
     "org/gnome/desktop/interface".enable-hot-corners = true;
     # Edge tiling (Active Screen Edges)
     "org/gnome/mutter".edge-tiling = true;
-
     # Favorite apps (Dash pinned apps)
     "org/gnome/shell".favorite-apps = [
       "org.gnome.Nautilus.desktop"
@@ -41,20 +37,10 @@ in
       "code.desktop"
       "vesktop.desktop"
     ];
-
     # Add qemu handler for VMs
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = [ "qemu:///system" ];
       uris = [ "qemu:///system" ];
-    };
-    # Enabled extensions
-    "org/gnome/shell" = {
-      disable-user-extensions = false;
-      enabled-extensions = with pkgs.gnomeExtensions; [
-        blur-my-shell.extensionUuid
-        gsconnect.extensionUuid
-        appindicator.extensionUuid
-      ];
     };
   };
 

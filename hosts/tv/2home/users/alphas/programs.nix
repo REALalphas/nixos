@@ -74,39 +74,4 @@
       "window.titleBarStyle" = "custom";
     };
   };
-
-  # Spotify with mods
-  # programs.spicetify =
-  #   let
-  #     spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
-  #   in
-  #   {
-  #     enable = true;
-  #     theme = {
-  #       name = "Override";
-
-  #       src = spicePkgs.themes.spotifyNoPremium.src;
-  #       requiredExtensions = [ spicePkgs.extensions.adblock ];
-
-  #       injectCss = true;
-  #       replaceColors = false;
-  #       sidebarConfig = false;
-  #       # homeConfig = true;
-  #       overwriteAssets = true;
-  #       additionalCss = ''
-  #         * {
-  #         box-shadow: 0 0 1px solid #fff;
-  #         }
-  #       '';
-  #     };
-
-  #     enabledExtensions = with spicePkgs.extensions; [
-  #       adblock
-  #       betterGenres
-  #       history
-  #       shuffle
-  #       songStats
-  #       hidePodcasts
-  #     ];
-  #   };
 }
