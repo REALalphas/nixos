@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-VERSION="0.61"
+VERSION="0.63"
+
+# Prevent re-execution after sudo
+SUDO_REEXEC=${SUDO_REEXEC:-false}
 
 # Colors
 RED='\033[0;31m'
@@ -57,7 +60,7 @@ log_error() {
 check_sudo() {
     if [ "$EUID" -ne 0 ]; then
         log_info "Elevating privileges..."
-        exec sudo -E "$0" "${ORIGINAL_ARGS[@]}"
+        SUDO_REEXEC=true exec sudo -E "$0" "${ORIGINAL_ARGS[@]}"
     fi
 }
 
@@ -128,6 +131,7 @@ Commands:
     build, b         Build a new system configuration
     dir, d           Show current NixOS configuration directory
     reset-dir, rd    Reset location of configuration directory to default
+    git-check, g     Check git repository status and updates
 
 Options:
     --no-flakes   Run without flakes support
@@ -212,22 +216,51 @@ check_git_updates() {
     return 0
 }
 
+# Add new function near other command functions
+check_git_status() {
+    log_info "Checking git repository status..."
+    check_git
+    check_nix_config
+
+    if [ ! -d ".git" ]; then
+        log_warning "Not a git repository"
+        return 1
+    fi
+
+    # Show current branch
+    local branch=$(git branch --show-current)
+    echo -e "${BLUE}Current branch:${NC} $branch"
+
+    # Show status
+    echo -e "\n${BLUE}Git status:${NC}"
+    git status -s
+
+    echo -e ""
+
+    # Check for updates
+    check_git_updates
+
+    return 0
+}
+
 # Operation functions with progress indication
 update_system() {
     log_info "Starting system update..."
     check_rsync
-    check_git
-    check_nix_config
     
-    # Handle git operations before sudo
-    check_git_updates
-    local git_status=$?
-    
-    if [ $git_status -eq 2 ]; then
-        log_success "Git repository updated successfully"
+    # Only run git operations on first execution (non-sudo)
+    if [ "$SUDO_REEXEC" = false ]; then
+        check_git
+        check_nix_config
+        
+        check_git_updates
+        local git_status=$?
+        
+        if [ $git_status -eq 2 ]; then
+            log_success "Git repository updated successfully"
+        fi
     fi
 
-    # Now elevate privileges for system operations
     check_sudo
     
     save_nix_dir
@@ -256,18 +289,20 @@ update_system() {
 upgrade_system() {
     log_info "Starting system upgrade..."
     check_rsync
-    check_git
-    check_nix_config
     
-    # Handle git operations before sudo
-    check_git_updates
-    local git_status=$?
-    
-    if [ $git_status -eq 2 ]; then
-        log_success "Git repository updated successfully"
+    # Only run git operations on first execution (non-sudo)
+    if [ "$SUDO_REEXEC" = false ]; then
+        check_git
+        check_nix_config
+        
+        check_git_updates
+        local git_status=$?
+        
+        if [ $git_status -eq 2 ]; then
+            log_success "Git repository updated successfully"
+        fi
     fi
 
-    # Now elevate privileges for system operations
     check_sudo
     
     save_nix_dir
@@ -484,6 +519,10 @@ while [[ $# -gt 0 ]]; do
             command="reset-dir"
             shift
             ;;
+        git-check|g)
+            command="git-check"
+            shift
+            ;;
         --no-flakes)
             use_flakes=false
             shift
@@ -553,6 +592,9 @@ case $command in
         ;;
     reset-dir)
         reset_nix_dir
+        ;;
+    git-check)
+        check_git_status
         ;;
 esac
 
