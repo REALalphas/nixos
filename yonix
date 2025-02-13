@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.63"
+VERSION="0.65"
 
 # Prevent re-execution after sudo
 SUDO_REEXEC=${SUDO_REEXEC:-false}
@@ -20,11 +20,13 @@ mkdir -p "$HOME/.config/yonix"
 
 # Function to save nix directory
 save_nix_dir() {
+    # Record the current working directory as the Nix configuration location.
     echo "$(pwd)" > "$NIX_DIR_FILE"
 }
 
 # Function to get nix directory
 get_nix_dir() {
+    # Retrieve the stored Nix configuration directory, or return the default if not set.
     if [ -f "$NIX_DIR_FILE" ]; then
         cat "$NIX_DIR_FILE"
     else
@@ -34,6 +36,7 @@ get_nix_dir() {
 
 # Rename reset directory function
 reset_nix_dir() {
+    # Remove the saved Nix directory configuration and log the reset operation.
     if [ -f "$NIX_DIR_FILE" ]; then
         rm "$NIX_DIR_FILE"
         log_success "Reset NixOS configuration directory to default"
@@ -44,20 +47,25 @@ reset_nix_dir() {
 
 # Logging functions
 log_info() { 
+    # Log an informational message.
     [ "$quiet_mode" = false ] && echo -e "${BLUE}[INFO]${NC} $1"
 }
 log_success() { 
+    # Log a success message.
     [ "$quiet_mode" = false ] && echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 log_warning() { 
+    # Log a warning message.
     [ "$quiet_mode" = false ] && echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 log_error() { 
+    # Log an error message.
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
 
 # Modified check_sudo to properly pass arguments
 check_sudo() {
+    # Elevate privileges if the script is not run as root.
     if [ "$EUID" -ne 0 ]; then
         log_info "Elevating privileges..."
         SUDO_REEXEC=true exec sudo -E "$0" "${ORIGINAL_ARGS[@]}"
@@ -72,6 +80,7 @@ SPINNER_FRAMES=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)
 
 # Improved spinner function
 spinner() {
+    # Display a progress spinner while a background process is running.
     local pid=$1
     local message="${2:-Processing}"
     local delay=0.08
@@ -91,6 +100,7 @@ spinner() {
 
 # Run command with spinner for non-verbose operations
 run_with_spinner() {
+    # Execute a command while optionally showing a spinner for progress indication.
     local cmd="$1"
     local msg="$2"
     local show_output="${3:-false}"
@@ -111,12 +121,14 @@ run_with_spinner() {
 
 # Helper function to escape paths
 escape_path() {
+    # Prepare a file path by escaping any special characters.
     local path="$1"
     printf "%q" "$path"
 }
 
 # Help message
 show_help() {
+    # Display usage instructions and list available commands and options.
     cat << EOF
 Yonix - NixOS System Management Utility v${VERSION}
 
@@ -152,6 +164,7 @@ EOF
 
 # Add function to check for required configuration files
 check_nix_config() {
+    # Verify that a valid NixOS configuration file (flake.nix or configuration.nix) exists.
     if [ ! -f "flake.nix" ] && [ ! -f "configuration.nix" ]; then
         handle_error "No flake.nix or configuration.nix found in $(pwd)"
     fi
@@ -159,12 +172,14 @@ check_nix_config() {
 
 # Error handling
 handle_error() {
+    # Output an error message and exit the script.
     log_error "An error occurred: $1"
     exit 1
 }
 
 # Check if rsync present on system
 check_rsync() {
+    # Confirm that 'rsync' is installed; prompt to open a nix-shell to install it if missing.
     if ! command -v rsync &> /dev/null; then
         log_warning "rsync is not installed"
         echo -e "${YELLOW}Would you like to enter nix-shell with rsync? (y/n)${NC}"
@@ -179,6 +194,7 @@ check_rsync() {
 
 # Add after the check_rsync function
 check_git() {
+    # Confirm that 'git' is installed; prompt to open a nix-shell if it is missing.
     if ! command -v git &> /dev/null; then
         log_warning "git is not installed"
         echo -e "${YELLOW}Would you like to enter nix-shell with git? (y/n)${NC}"
@@ -192,6 +208,7 @@ check_git() {
 }
 
 check_git_updates() {
+    # Check if the local git repository is behind the remote; offer to pull updates if necessary.
     if [ -d ".git" ]; then
         git remote update &> /dev/null
         UPSTREAM=${1:-'@{u}'}
@@ -218,6 +235,7 @@ check_git_updates() {
 
 # Add new function near other command functions
 check_git_status() {
+    # Show the current git branch and status; then check and optionally update from upstream.
     log_info "Checking git repository status..."
     check_git
     check_nix_config
@@ -243,8 +261,27 @@ check_git_status() {
     return 0
 }
 
-# Operation functions with progress indication
+# Add helper to copy configuration files (for update and upgrade)
+copy_config_files() {
+    # Copy the current configuration files to /etc/nixos using rsync.
+    save_nix_dir
+    local current_dir
+    current_dir=$(escape_path "$(pwd)")
+    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
+}
+
+# Add helper to prepare /etc/nixos directory (for trace and build)
+prepare_nixos_directory() {
+    # Clear the existing /etc/nixos directory and set it up with the current configuration.
+    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing /etc/nixos directory" false
+    save_nix_dir
+    local current_dir
+    current_dir=$(escape_path "$(pwd)")
+    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
+}
+
 update_system() {
+    # Perform a system update: validate configuration, possibly update git, copy files, and rebuild.
     log_info "Starting system update..."
     check_rsync
     
@@ -263,9 +300,7 @@ update_system() {
 
     check_sudo
     
-    save_nix_dir
-    local current_dir=$(escape_path "$(pwd)")
-    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
+    copy_config_files
     cd /etc/nixos || handle_error "Failed to change directory"
 
     # Run rebuild showing output
@@ -287,6 +322,7 @@ update_system() {
 }
 
 upgrade_system() {
+    # Upgrade the system: optionally update the git repo, then copy files and rebuild.
     log_info "Starting system upgrade..."
     check_rsync
     
@@ -305,10 +341,7 @@ upgrade_system() {
 
     check_sudo
     
-    save_nix_dir
-    local current_dir=$(escape_path "$(pwd)")
-    # Run rsync with spinner and clearer message
-    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
+    copy_config_files
     cd /etc/nixos || handle_error "Failed to change directory"
 
     # Run upgrade showing output
@@ -334,6 +367,7 @@ upgrade_system() {
 }
 
 clean_system() {
+    # Clean up old system generations, logs, and optimize the nix store.
     log_info "Starting system cleanup..."
     check_sudo
     cd /etc/nixos || handle_error "Failed to change directory"
@@ -348,16 +382,13 @@ clean_system() {
 }
 
 trace_build() {
+    # Rebuild the system with trace information for debugging.
     log_info "Starting trace build..."
     check_sudo
     check_rsync
     check_nix_config
     
-    save_nix_dir
-    local current_dir=$(escape_path "$(pwd)")
-    # Run setup commands with spinner and clearer messages
-    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing /etc/nixos directory" false
-    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
+    prepare_nixos_directory
     cd /etc/nixos || handle_error "Failed to change directory"
 
     # Run trace build showing output
@@ -372,16 +403,13 @@ trace_build() {
 }
 
 build_new() {
+    # Build a new system configuration: set hostname and rebuild based on current settings.
     log_info "Starting new build..."
     check_sudo
     check_rsync
     check_nix_config
     
-    save_nix_dir
-    local current_dir=$(escape_path "$(pwd)")
-    # Run setup commands with spinner and clearer messages
-    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing /etc/nixos directory" false
-    run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
+    prepare_nixos_directory
     
     read -p "Enter hostname: " hostname
     sudo hostname $hostname || handle_error "Failed to set hostname"
@@ -400,6 +428,7 @@ build_new() {
 
 # Add new function to show nix directory
 show_nix_dir() {
+    # Display the current NixOS configuration directory and check for configuration files.
     local dir=$(get_nix_dir)
     echo -e "${BLUE}NixOS configuration directory:${NC} $dir"
     if [ -f "$dir/flake.nix" ]; then
