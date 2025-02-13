@@ -68,7 +68,7 @@
       # unstable.spoofdpi
 
       # Monitor control utility
-      ddcutil
+      # ddcutil
 
       ### Creative Tools
       # Image editor similar to Paint.NET
@@ -81,8 +81,8 @@
       # Cryptocurrency wallet
       # exodus
 
-      ### GNOME Extensions
     ])
+    ### GNOME Extensions
     ++ (with pkgs.gnomeExtensions; [
       # Tray icons
       appindicator
@@ -90,6 +90,8 @@
       blur-my-shell
       # Connector for phone
       gsconnect
+      # Hides bar to allow waydroid full screen
+      hide-top-bar
 
     ]);
   # Enabled extensions
@@ -99,6 +101,7 @@
       blur-my-shell.extensionUuid
       gsconnect.extensionUuid
       appindicator.extensionUuid
+      hide-top-bar.extensionUuid
     ];
   };
 }
