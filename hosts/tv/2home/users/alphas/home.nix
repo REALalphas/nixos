@@ -1,8 +1,8 @@
-{
-  inputs,
-  config,
-  pkgs,
-  ...
+{ inputs
+, config
+, pkgs
+, stateVersion
+, ...
 }:
 let
   username = "alphas";
@@ -44,8 +44,8 @@ in
     };
   };
 
-  # TODO: See flake.nix
-  home.stateVersion = "24.11";
+  # !!! See /flake.nix
+  home.stateVersion = stateVersion;
   home.enableNixpkgsReleaseCheck = false;
 
   # Let home Manager install and manage itself.

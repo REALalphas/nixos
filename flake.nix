@@ -106,7 +106,11 @@
             # Home Manager module with common settings
             home-manager.nixosModules.home-manager
             {
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.extraSpecialArgs = {
+                inherit
+                  inputs
+                  stateVersion;
+              };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               # Creating home-manager for every user

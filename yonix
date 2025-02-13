@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.52"
+VERSION="0.53"
 
 # Colors
 RED='\033[0;31m'
@@ -148,6 +148,7 @@ handle_error() {
     exit 1
 }
 
+# Check if rsync present on system
 check_rsync() {
     if ! command -v rsync &> /dev/null; then
         log_warning "rsync is not installed"
@@ -213,8 +214,8 @@ clean_system() {
     check_sudo
     cd /etc/nixos || handle_error "Failed to change directory"
 
-    run_with_spinner "sudo journalctl --vacuum-time=2d" "Cleaning journals" false
-    run_with_spinner "sudo nix-env --delete-generations 14d" "Removing old generations" false
+    run_with_spinner "sudo journalctl --vacuum-time=2d" "Cleaning journals (2d+)" false
+    run_with_spinner "sudo nix-env --delete-generations 14d" "Removing old generations (14d+)" false
     run_with_spinner "sudo nix-store --gc --print-dead" "Collecting garbage from nix-store" false
     run_with_spinner "sudo nix-collect-garbage -d" "Removing garbage" false
     run_with_spinner "sudo nix-store --optimise" "Optimizing store" false
