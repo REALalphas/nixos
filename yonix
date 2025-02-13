@@ -173,12 +173,62 @@ check_rsync() {
     fi
 }
 
+# Add after the check_rsync function
+check_git() {
+    if ! command -v git &> /dev/null; then
+        log_warning "git is not installed"
+        echo -e "${YELLOW}Would you like to enter nix-shell with git? (y/n)${NC}"
+        read -r answer
+        if [[ "$answer" == "y" ]]; then
+            nix-shell -p git
+        else
+            handle_error "git is required for this operation"
+        fi
+    fi
+}
+
+check_git_updates() {
+    if [ -d ".git" ]; then
+        git remote update &> /dev/null
+        UPSTREAM=${1:-'@{u}'}
+        LOCAL=$(git rev-parse @)
+        REMOTE=$(git rev-parse "$UPSTREAM")
+        BASE=$(git merge-base @ "$UPSTREAM")
+
+        if [ "$LOCAL" = "$REMOTE" ]; then
+            log_info "Git repository is up to date"
+            return 0
+        elif [ "$LOCAL" = "$BASE" ]; then
+            log_warning "Git repository needs to be updated"
+            echo -e "${YELLOW}Would you like to pull updates? (y/n)${NC}"
+            read -r answer
+            if [[ "$answer" == "y" ]]; then
+                run_with_spinner "git pull" "Pulling updates from remote repository" true
+                return 2  # Signal that we updated
+            fi
+            return 1
+        fi
+    fi
+    return 0
+}
+
 # Operation functions with progress indication
 update_system() {
     log_info "Starting system update..."
-    check_sudo
     check_rsync
+    check_git
     check_nix_config
+    
+    # Handle git operations before sudo
+    check_git_updates
+    local git_status=$?
+    
+    if [ $git_status -eq 2 ]; then
+        log_success "Git repository updated successfully"
+    fi
+
+    # Now elevate privileges for system operations
+    check_sudo
     
     save_nix_dir
     local current_dir=$(escape_path "$(pwd)")
@@ -205,9 +255,20 @@ update_system() {
 
 upgrade_system() {
     log_info "Starting system upgrade..."
-    check_sudo
     check_rsync
+    check_git
     check_nix_config
+    
+    # Handle git operations before sudo
+    check_git_updates
+    local git_status=$?
+    
+    if [ $git_status -eq 2 ]; then
+        log_success "Git repository updated successfully"
+    fi
+
+    # Now elevate privileges for system operations
+    check_sudo
     
     save_nix_dir
     local current_dir=$(escape_path "$(pwd)")
