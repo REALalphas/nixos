@@ -29,7 +29,7 @@
               "factory.name" = "support.null-audio-sink";
               "node.name" = "MegaBassSystem";
               "node.description" = "MegaBassSystem";
-              "media.class" = "Audio/Sink/Source/Virtual";
+              "media.class" = "Audio/Sink/Source";
               "audio.position" = "FL,FR";
             };
           }
