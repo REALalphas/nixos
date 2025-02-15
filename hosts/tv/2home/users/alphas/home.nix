@@ -1,8 +1,9 @@
-{ inputs
-, config
-, pkgs
-, stateVersion
-, ...
+{
+  inputs,
+  config,
+  pkgs,
+  stateVersion,
+  ...
 }:
 let
   # Getting username from foldet it's in
@@ -48,5 +49,7 @@ in
       autoconnect = [ "qemu:///system" ];
       uris = [ "qemu:///system" ];
     };
+    # Volume Step Settings
+    "org/gnome/settings-daemon/plugins/media-keys".volume-step = 5;
   };
 }
