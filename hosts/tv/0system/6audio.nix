@@ -24,12 +24,12 @@
       pipewire."91-null-sinks" = {
         context.objects = [
           {
-            factory = "adapter";
+            factory = "module-null-sink";
             args = {
               "factory.name" = "support.null-audio-sink";
               "node.name" = "MegaBassSystem";
               "node.description" = "MegaBassSystem";
-              "media.class" = "Audio/Sink/Source";
+              "media.class" = "Audio/Source/Sink";
               "audio.position" = "FL,FR";
             };
           }
