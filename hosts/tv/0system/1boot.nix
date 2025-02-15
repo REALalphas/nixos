@@ -32,8 +32,13 @@
     kernelParams = [
       # No poop on screen
       "quiet"
+      "loglevel=3"
       # Poop screen
       "splash"
+      # Skip CPU randomization check (speeds up boot)
+      "random.trust_cpu=on"
+      # Disable security mitigations (speeds up boot)
+      "mitigations=off"
       # GPU Passthrough
       # "amd_iommu=on"
       # "iommu=pt"
@@ -55,4 +60,7 @@
       v4l2loopback
     ];
   };
+  # Store temporary files in memory
+  boot.tmp.useTmpfs = true;
+  boot.tmp.tmpfsSize = "50%"; # RAM volume to use
 }
