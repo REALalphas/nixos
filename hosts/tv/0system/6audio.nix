@@ -22,7 +22,7 @@
 
     extraConfig = {
       pipewire."91-null-sinks" = {
-        context.objects = [
+        "context.objects" = [
           {
             factory = "adapter";
             args = {
@@ -30,6 +30,16 @@
               "node.name" = "MegaBassSystem";
               "node.description" = "MegaBassSystem";
               "media.class" = "Audio/Sink/Virtual";
+              "audio.position" = "FL,FR";
+            };
+          }
+          {
+            factory = "adapter";
+            args = {
+              "factory.name" = "support.null-audio-sink";
+              "node.name" = "virtual-output";
+              "node.description" = "Virtual Output";
+              "media.class" = "Audio/Sink";
               "audio.position" = "FL,FR";
             };
           }
