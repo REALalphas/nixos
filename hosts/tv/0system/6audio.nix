@@ -30,7 +30,7 @@
               "node.name" = "virtual-mega-bass-system";
               "node.description" =
                 "Mega Bass System 2+2+1 DTS Plus THX Certified Dolby Atmos 7.1.4 Surround Sound System";
-              "media.class" = "Audio/Sink";
+              "media.class" = "Audio/Sink/Source";
               "audio.position" = "FL,FR";
             };
           }
