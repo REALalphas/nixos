@@ -70,4 +70,10 @@
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gnome ];
   };
+
+  # Enable input remapper
+  services.input-remapper = {
+    enable = true;
+    enableUdevRules = true;
+  };
 }

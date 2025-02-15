@@ -167,6 +167,9 @@
     # Ladybird Browser (Fork from SerenityOS)
     unstable.ladybird
 
+    # Go lang
+    go
+
     ### GNOME Extensions
   ]) ++ (with pkgs.gnomeExtensions; [
     # Tray icons
