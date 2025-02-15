@@ -92,6 +92,8 @@
       gsconnect
       # Hides bar to allow waydroid full screen
       hide-top-bar
+      # Don't show overview on start
+      no-overview
 
     ]);
   # Enabled extensions
@@ -102,6 +104,7 @@
       gsconnect.extensionUuid
       appindicator.extensionUuid
       hide-top-bar.extensionUuid
+      no-overview.extensionUuid
     ];
   };
 }

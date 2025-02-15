@@ -18,6 +18,9 @@
       # Gnome Tweaks for autostart settings
       gnome-tweaks
 
+      # Change GNOME desktop entries
+      alacarte
+
       # NFS Support # See 5systemd.nix # See 10services.nix
       # nfs-utils
 
