@@ -32,6 +32,7 @@
                 "Mega Bass System 2+2+1 DTS Plus THX Certified Dolby Atmos 7.1.4 Surround Sound System";
               "media.class" = "Audio/Sink";
               "audio.position" = "FL,FR";
+              "monitor.channel-volumes" = true;
             };
           }
         ];
