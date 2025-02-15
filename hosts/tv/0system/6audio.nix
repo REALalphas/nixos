@@ -21,6 +21,20 @@
     # wireplumber.enable = false;
 
     extraConfig = {
+      pipewire."91-null-sinks" = {
+        context.objects = [
+          {
+            factory = "adapter";
+            args = {
+              "factory.name" = "support.null-audio-sink";
+              "node.name" = "MegaBassSystem";
+              "node.description" = "MegaBassSystem";
+              "media.class" = "Audio/Sink/Source/Virtual";
+              "audio.position" = "FL,FR";
+            };
+          }
+        ];
+      };
       pipewire."92-low-latency" = {
         context.properties = {
           default.clock.allowed-rates = [

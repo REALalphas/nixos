@@ -1,188 +1,194 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }:
 {
   # !!! List packages installed in SYSTEM
   # To search run: `$ nix search wget`
-  environment.systemPackages = (with pkgs; [
-    ### System Utilities
-    # Text editor (cli)
-    nano
+  environment.systemPackages =
+    (with pkgs; [
+      ### System Utilities
+      # Text editor (cli)
+      nano
 
-    # NFS Support # See 5systemd.nix # See 10services.nix
-    nfs-utils
+      # Nix formatter # See programs.nix
+      nixfmt-rfc-style
 
-    # Linux AMDGPU Controller (LACT) # See 10services.nix
-    lact
+      # NFS Support # See 5systemd.nix # See 10services.nix
+      nfs-utils
 
-    # MangoHud (Gaming overlay)
-    mangohud
+      # Linux AMDGPU Controller (LACT) # See 10services.nix
+      lact
 
-    # Backup utility
-    pika-backup
+      # MangoHud (Gaming overlay)
+      mangohud
 
-    # Fuzzy find
-    fzf
+      # Backup utility
+      pika-backup
 
-    # Distrobox
-    distrobox
+      # Fuzzy find
+      fzf
 
-    # Universal proxy platform
-    sing-box
+      # Distrobox
+      distrobox
 
-    # Duplicate file finder
-    czkawka
+      # Universal proxy platform
+      sing-box
 
-    ### Media & Entertainment
-    # Sound recorder
-    gnome-sound-recorder
+      # Duplicate file finder
+      czkawka
 
-    # Modern GTK4 audio player
-    amberol # (depr)
-    unstable.decibels
+      ### Media & Entertainment
+      # Sound recorder
+      gnome-sound-recorder
 
-    # Video players
-    mpv
-    mplayer
-    smplayer
+      # Modern GTK4 audio player
+      amberol # (depr)
+      unstable.decibels
 
-    # Simple image viewer application written with GTK4 and Rust
-    unstable.loupe
+      # Video players
+      mpv
+      mplayer
+      smplayer
 
-    ### Media Creation
-    # Free and open source software for video recording and live streaming
-    obs-studio
+      # Simple image viewer application written with GTK4 and Rust
+      unstable.loupe
 
-    # Davinci Resolve (Video Editor)
-    # davinci-resolve
+      ### Media Creation
+      # Free and open source software for video recording and live streaming
+      obs-studio
 
-    # Professional video editor
-    kdePackages.kdenlive
+      # Davinci Resolve (Video Editor)
+      # davinci-resolve
 
-    # 3D Creation/Animation/Publishing System
-    blender-hip
+      # Professional video editor
+      kdePackages.kdenlive
 
-    ### Audio Tools
-    # Audio effects for PipeWire applications
-    easyeffects
-    # GTK patchbay for PipeWire
-    # helvum
+      # 3D Creation/Animation/Publishing System
+      blender-hip
 
-    # Audio plugin host and patchbay
-    carla
+      ### Audio Tools
+      # Audio effects for PipeWire applications
+      easyeffects
+      # GTK patchbay for PipeWire
+      # helvum
 
-    # Room Eq Wizard
-    roomeqwizard
+      # Audio plugin host and patchbay
+      carla
 
-    ### Office & Productivity
-    # OnlyOffice Editors
-    onlyoffice-bin_latest
+      # Room Eq Wizard
+      roomeqwizard
 
-    # Web browser
-    chromium
+      ### Office & Productivity
+      # OnlyOffice Editors
+      onlyoffice-bin_latest
 
-    ### Development
-    ## Mobile Development
-    # IDE for Android
-    # androidStudioPackages.dev
+      # Web browser
+      chromium
 
-    # Android SDK platform tools
-    # android-tools
+      ### Development
+      ## Mobile Development
+      # IDE for Android
+      # androidStudioPackages.dev
 
-    # Android Studio CLI Tools
-    # android-studio-tools
+      # Android SDK platform tools
+      # android-tools
 
-    # Flutter is Google's SDK for building mobile, web and desktop with Dart
-    # flutter
+      # Android Studio CLI Tools
+      # android-studio-tools
 
-    ## Raspberry Pi Pico Development
-    # gcc               # C/C++ compiler
-    # go                # Go programming language
-    # elixir            # Elixir programming language
-    # libclang          # LLVM C language frontend
-    # python3           # Python programming language
-    # libusb1           # USB device access library
-    # openocd           # Original OpenOCD
-    # openocd-rp2040    # Debug adapter for RP2040
-    # pico-sdk          # Raspberry Pi Pico SDK
-    # picotool          # Raspberry Pi Pico utility
-    # ninja             # Build system
+      # Flutter is Google's SDK for building mobile, web and desktop with Dart
+      # flutter
 
-    ## Web Development
-    # NodeJS Runtime
-    nodejs_22
+      ## Raspberry Pi Pico Development
+      # gcc               # C/C++ compiler
+      # go                # Go programming language
+      # elixir            # Elixir programming language
+      # libclang          # LLVM C language frontend
+      # python3           # Python programming language
+      # libusb1           # USB device access library
+      # openocd           # Original OpenOCD
+      # openocd-rp2040    # Debug adapter for RP2040
+      # pico-sdk          # Raspberry Pi Pico SDK
+      # picotool          # Raspberry Pi Pico utility
+      # ninja             # Build system
 
-    # NodeJS gyp
-    gobject-introspection
-    cairo
-    pkg-config
+      ## Web Development
+      # NodeJS Runtime
+      nodejs_22
 
-    ### Communication
-    # Secure messaging application
-    signal-desktop
+      # NodeJS gyp
+      gobject-introspection
+      cairo
+      pkg-config
 
-    # Cross-platform universal messaging app
-    beeper
+      ### Communication
+      # Secure messaging application
+      signal-desktop
 
-    ### Remote Access
-    # Remote desktop client supporting multiple protocols
-    remmina
+      # Cross-platform universal messaging app
+      beeper
 
-    # Remote Control an Android device
-    # scrcpy
+      ### Remote Access
+      # Remote desktop client supporting multiple protocols
+      remmina
 
-    ### Media Server
-    # Jellyfin (Home Media Server) # See 10services.nix
-    jellyfin
-    jellyfin-web
-    jellyfin-ffmpeg
+      # Remote Control an Android device
+      # scrcpy
 
-    ### File Sharing
-    # BitTorrent Client
-    unstable.qbittorrent
+      ### Media Server
+      # Jellyfin (Home Media Server) # See 10services.nix
+      jellyfin
+      jellyfin-web
+      jellyfin-ffmpeg
 
-    ### Image Processing
-    # Simple & useful image compressor
-    unstable.curtail
+      ### File Sharing
+      # BitTorrent Client
+      unstable.qbittorrent
 
-    # Image manipulation tools
-    imagemagick
+      ### Image Processing
+      # Simple & useful image compressor
+      unstable.curtail
 
-    ### Gaming
-    # Bottles (games launcher)
-    (bottles.override { extraLibraries = pkgs: [ libunwind ]; })
-    # Cartridges
-    cartridges
+      # Image manipulation tools
+      imagemagick
 
-    ### Theming
-    # QT Adwaita theme # See configuration.nix
-    adwaita-qt
-    adwaita-qt6
-    qadwaitadecorations-qt6
-    # QT Gnome platform
-    qgnomeplatform
-    qgnomeplatform-qt6
+      ### Gaming
+      # Bottles (games launcher)
+      (bottles.override { extraLibraries = pkgs: [ libunwind ]; })
+      # Cartridges
+      cartridges
 
-    # Ladybird Browser (Fork from SerenityOS)
-    unstable.ladybird
+      ### Theming
+      # QT Adwaita theme # See configuration.nix
+      adwaita-qt
+      adwaita-qt6
+      qadwaitadecorations-qt6
+      # QT Gnome platform
+      qgnomeplatform
+      qgnomeplatform-qt6
 
-    # Go lang
-    go
+      # Ladybird Browser (Fork from SerenityOS)
+      unstable.ladybird
 
-    ### GNOME Extensions
-  ]) ++ (with pkgs.gnomeExtensions; [
-    # Tray icons
-    appindicator
-    # Shell blur
-    blur-my-shell
-    gsconnect
-    # DDC controll
-    control-monitor-brightness-and-volume-with-ddcutil
+      # Go lang
+      go
 
-    # Shell blur
-    # gnomeExtensions.blur-my-shell
-    # FIXME: Geminiai
-    # gnomeExtensions.gemini-ai
-  ]);
+      ### GNOME Extensions
+    ])
+    ++ (with pkgs.gnomeExtensions; [
+      # Tray icons
+      appindicator
+      # Shell blur
+      blur-my-shell
+      gsconnect
+      # DDC controll
+      control-monitor-brightness-and-volume-with-ddcutil
+
+      # Shell blur
+      # gnomeExtensions.blur-my-shell
+      # FIXME: Geminiai
+      # gnomeExtensions.gemini-ai
+    ]);
 }
