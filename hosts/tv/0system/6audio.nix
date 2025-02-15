@@ -27,18 +27,9 @@
             factory = "adapter";
             args = {
               "factory.name" = "support.null-audio-sink";
-              "node.name" = "MegaBassSystem";
-              "node.description" = "MegaBassSystem";
-              "media.class" = "Audio/Sink/Virtual";
-              "audio.position" = "FL,FR";
-            };
-          }
-          {
-            factory = "adapter";
-            args = {
-              "factory.name" = "support.null-audio-sink";
-              "node.name" = "virtual-output";
-              "node.description" = "Virtual Output";
+              "node.name" = "virtual-mega-bass-system";
+              "node.description" =
+                "Mega Bass System 2+2+1 DTS Plus THX Certified Dolby Atmos 7.1.4 Surround Sound System";
               "media.class" = "Audio/Sink";
               "audio.position" = "FL,FR";
             };
