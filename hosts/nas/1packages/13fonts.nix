@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }:
 {
   fonts = {
@@ -12,6 +13,8 @@
       liberation_ttf
       fira-code
       fira-code-symbols
+      manrope
+      departure-mono
       # MS fonts
       # corefonts
       # times-newer-roman

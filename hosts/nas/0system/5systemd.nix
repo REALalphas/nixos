@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }:
 {
   # Mount web-2xl NFS share # See 12packages.nix # See 10services.nix
@@ -10,9 +11,16 @@
       mountConfig = {
         Options = "noatime";
       };
-      # TODO: Set IP for web-2xl
       what = "web.xl:/mnt/M1/user/alphas";
       where = "/mnt/web-2xl/alphas";
+    }
+    {
+      type = "nfs";
+      mountConfig = {
+        Options = "noatime";
+      };
+      what = "web.xl:/mnt/M2/user/alphas";
+      where = "/mnt/web-2xl/dump";
     }
   ];
 
@@ -24,9 +32,16 @@
       };
       where = "/mnt/web-2xl/alphas";
     }
+    {
+      wantedBy = [ "multi-user.target" ];
+      automountConfig = {
+        TimeoutIdleSec = "600";
+      };
+      where = "/mnt/web-2xl/dump";
+    }
   ];
 
   # LACT (Linux AMDGPU Controller) # See 12packages.nix
   systemd.packages = with pkgs; [ lact ];
-  systemd.services.lactd.wantedBy = ["multi-user.target"];
+  systemd.services.lactd.wantedBy = [ "multi-user.target" ];
 }

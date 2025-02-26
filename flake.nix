@@ -28,31 +28,44 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-index-database.url = "github:nix-community/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+    # Nix Index
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    inputs@{ self
-    , nixpkgs-nstbl
-    , nixpkgs-24-11
-    , nixpkgs-24-05
-    , nixpkgs-23-11
-    , aagl
-    , home-manager
-    , nix-index-database
-    , ...
+    inputs@{
+      self,
+      nixpkgs-nstbl,
+      nixpkgs-24-11,
+      nixpkgs-24-05,
+      nixpkgs-23-11,
+      aagl,
+      home-manager,
+      nix-index-database,
+      ...
     }:
     let
       overlays = [
         (final: prev: {
-          unstable = import nixpkgs-nstbl { inherit (final) system; config.allowUnfree = true; };
+          unstable = import nixpkgs-nstbl {
+            inherit (final) system;
+            config.allowUnfree = true;
+          };
         })
         (final: prev: {
-          nix24-05 = import nixpkgs-24-05 { inherit (final) system; config.allowUnfree = true; };
+          nix24-05 = import nixpkgs-24-05 {
+            inherit (final) system;
+            config.allowUnfree = true;
+          };
         })
         (final: prev: {
-          nix23-11 = import nixpkgs-23-11 { inherit (final) system; config.allowUnfree = true; };
+          nix23-11 = import nixpkgs-23-11 {
+            inherit (final) system;
+            config.allowUnfree = true;
+          };
         })
       ];
 
@@ -65,25 +78,30 @@
       stateVersion = config.system.nixosVersion;
 
       nixpkgs =
-        if nixosVersion == "24.11" then inputs.nixpkgs-24-11
-        else if nixosVersion == "24.05" then inputs.nixpkgs-24-05
-        else if nixosVersion == "23.11" then inputs.nixpkgs-23-11
-        else throw "Unsupported NixOS version: ${nixosVersion}";
+        if nixosVersion == "24.11" then
+          inputs.nixpkgs-24-11
+        else if nixosVersion == "24.05" then
+          inputs.nixpkgs-24-05
+        else if nixosVersion == "23.11" then
+          inputs.nixpkgs-23-11
+        else
+          throw "Unsupported NixOS version: ${nixosVersion}";
 
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
       lib = pkgs.lib;
 
-      getUsersConfigs = configDir:
+      getUsersConfigs =
+        configDir:
         let
           users = builtins.attrNames (builtins.readDir configDir);
         in
-        builtins.listToAttrs (map
-          (userName: {
+        builtins.listToAttrs (
+          map (userName: {
             name = "${userName}";
             value = import "${configDir}/${userName}/home.nix";
-          })
-          users);
+          }) users
+        );
 
       userConfigs = getUsersConfigs ./hosts/${configName}/2home/users;
     in
@@ -94,7 +112,8 @@
           specialArgs = {
             inherit
               overlays
-              inputs;
+              inputs
+              ;
           };
           modules = [
             # Add caching
@@ -109,7 +128,8 @@
               home-manager.extraSpecialArgs = {
                 inherit
                   inputs
-                  stateVersion;
+                  stateVersion
+                  ;
               };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -126,7 +146,10 @@
             {
               networking.hostName = hostname;
               system.stateVersion = stateVersion;
-              nix.settings.experimental-features = [ "nix-command" "flakes" ];
+              nix.settings.experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
               # For adding yonix to path and custom bins in your path
               environment.localBinInPath = true;
             }
