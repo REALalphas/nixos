@@ -52,4 +52,7 @@
     openFirewall = true;
     user = "alphas";
   };
+
+  # Flatpak for users support # See 5systemd.nix
+  services.flatpak.enable = true;
 }

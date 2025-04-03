@@ -1,8 +1,9 @@
-{ inputs
-, config
-, pkgs
-, stateVersion
-, ...
+{
+  inputs,
+  config,
+  pkgs,
+  stateVersion,
+  ...
 }:
 let
   # Getting username from foldet it's in

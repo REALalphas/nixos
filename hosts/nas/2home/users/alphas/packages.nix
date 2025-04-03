@@ -7,6 +7,10 @@
   home.packages = (
     with pkgs;
     [
+      # Flatpak
+      unstable.flatpak
+      unstable.gnome-software
+
       ### Web Browsers
       # Vivaldi web browser
       # unstable.vivaldi
