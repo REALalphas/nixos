@@ -56,7 +56,7 @@
       luajitPackages.luarocks
 
       # Modern SQL client
-      unstable.beekeeper-studio
+      # unstable.beekeeper-studio
 
       ### Gaming & Emulation
       # PS3 emulator/debugger
@@ -86,7 +86,7 @@
       obsidian
 
       # Remote desktop
-      unstable.rustdesk-flutter
+      # unstable.rustdesk-flutter
 
       # API Testing platform
       insomnia

@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }:
 {
   # Disable CUPS to print documents.
@@ -34,6 +35,7 @@
 
   # Whether to enable ollama server for local large language models. # See alphas/packages.nix
   services.ollama = {
+    package = pkgs.unstable.ollama-rocm;
     enable = true;
     host = "0.0.0.0";
     acceleration = "rocm";

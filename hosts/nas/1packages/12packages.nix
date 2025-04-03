@@ -12,6 +12,9 @@
       # Text editor (cli)
       nano
 
+      # # NTFS-3G (NTFS filesystem driver)
+      # ntfs3g
+
       # Nix formatter # See programs.nix
       nixfmt-rfc-style
 
@@ -174,6 +177,10 @@
 
       # Go lang
       go
+
+      # ROCm Tools
+      rocmPackages.rocm-smi
+      rocmPackages.rocminfo
 
       ### GNOME Extensions
     ])
