@@ -29,7 +29,21 @@
   boot.kernelPackages = pkgs.linuxPackages_xanmod_stable;
   boot = {
     kernel.sysctl = {
+      # Pressure to clean inodes and dentries in cache
+      "vm.vfs_cache_pressure" = 90;
+      # Make early write
+      "vm.dirty_ratio" = 10;
+      # Start early write
+      "vm.dirty_background_ratio" = 1;
+      # Expire cache fast
+      "vm.dirty_expire_centisecs" = 1000;
+      # Make kernel very aggressive
+      "vm.overcommit_memory" = 2;
+      # Give more memory to the kernel space
+      "vm.min_free_kbytes" = 131072; # 128MB
+      # Give more processes to the system
       "vm.max_map_count" = 16777216;
+      # Give more file descriptors to the system
       "fs.file-max" = 524288;
     };
     kernelParams = [

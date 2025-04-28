@@ -9,7 +9,7 @@
     {
       type = "nfs";
       mountConfig = {
-        Options = "noatime";
+        Options = "noatime,noac,actimeo=3";
       };
       what = "web.xl:/mnt/M1/user/alphas";
       where = "/mnt/web-2xl/alphas";
@@ -17,7 +17,7 @@
     {
       type = "nfs";
       mountConfig = {
-        Options = "noatime";
+        Options = "noatime,noac,actimeo=3";
       };
       what = "web.xl:/mnt/M2/user/alphas";
       where = "/mnt/web-2xl/dump";
