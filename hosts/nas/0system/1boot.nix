@@ -39,6 +39,7 @@
       "vm.dirty_expire_centisecs" = 1000;
       # Make kernel very aggressive
       "vm.overcommit_memory" = 2;
+      "vm.overcommit_ratio" = 95;
       # Give more memory to the kernel space
       "vm.min_free_kbytes" = 131072; # 128MB
       # Give more processes to the system
