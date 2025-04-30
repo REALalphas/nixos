@@ -6,7 +6,7 @@
 let
   dir = ./.;
   files = builtins.readDir dir;
-  nixFiles = filter (
+  nixFiles = builtins.filter (
     name:
     (builtins.stringLength name >= 4)
     && (builtins.substring (builtins.stringLength name - 4) 4 name == ".nix")
