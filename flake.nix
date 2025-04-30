@@ -87,8 +87,12 @@
             ./cache.nix
             ./servers/${configName}
 
-            # nix-index-database (nix-locate)
-            nix-index-database.nixosModules.nix-index
+            # nix-index-database (nix-locate) in headless mode
+            ({ ... }: {
+              imports = [ nix-index-database.nixosModules.nix-index ];
+              programs.nix-index-database.enableCommandNotFound = false;
+              programs.nix-index-database.graphics.enable = false;
+            })
 
             # Configuration
             {
