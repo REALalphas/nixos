@@ -7,12 +7,11 @@
 }:
 
 {
-  networking.dhcpcd.extraConfig = ''
-    # Disable IPv6
-    noipv6
-    # Disable ARP
-    noarp
-  '';
+  networking.dhcpcd = {
+    enable = true;
+    wait = false; # Don't wait for DHCP response during boot
+    extraConfig = "noarp"; # Disable ARP to speed up boot
+  };
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
 
