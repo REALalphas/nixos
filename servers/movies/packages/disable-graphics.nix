@@ -25,6 +25,6 @@ in
     ];
 
     # Explicitly disable any graphics-related features
-    hardware.opengl.enable = false;
+    hardware.graphics.enable = false;
   };
 }
