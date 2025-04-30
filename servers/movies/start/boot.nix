@@ -8,6 +8,7 @@
 
 {
   imports = [
+    (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
