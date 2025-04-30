@@ -5,6 +5,9 @@
 }:
 
 {
+  environment.systemPackages = [
+    pkgs.nfs-utils
+  ];
   systemd.mounts = [
     {
       type = "nfs";
