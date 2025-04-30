@@ -9,7 +9,7 @@
 {
   networking.dhcpcd = {
     enable = true;
-    wait = false; # Don't wait for DHCP response during boot
+    wait = "background"; # Don't wait for DHCP response during boot
     extraConfig = "noarp"; # Disable ARP to speed up boot
   };
   networking.useDHCP = lib.mkDefault true;
