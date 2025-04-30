@@ -5,9 +5,9 @@ let
 in
 
 {
-  services.xserver.enable = enableXServer;
-  services.xserver.excludePackages = with pkgs; [
-    # Simple terminal
-    pkgs.xterm
-  ];
+  # services.xserver.enable = enableXServer;
+  # services.xserver.excludePackages = with pkgs; [
+  #   # Simple terminal
+  #   pkgs.xterm
+  # ];
 }
