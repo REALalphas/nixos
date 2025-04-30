@@ -21,5 +21,6 @@ in
       enable = true;
       dataDir = "/mnt/web-2xl/dump/Media/Services/sonarr";
       user = "alphas";
+    };
   };
 }
