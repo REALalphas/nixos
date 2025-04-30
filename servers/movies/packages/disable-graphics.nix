@@ -11,7 +11,7 @@ in
 {
   options.system.headless = lib.mkOption {
     type = lib.types.bool;
-    default = false;
+    default = true;
     description = "Whether to disable all graphical/X11 related services and features";
   };
 
