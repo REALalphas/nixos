@@ -5,12 +5,11 @@
 }:
 
 {
-  boot.supportedFilesystems = [ "nfs" ];
   services.rpcbind.enable = true;
-
   environment.systemPackages = [
     pkgs.nfs-utils
   ];
+
   systemd.mounts = [
     {
       type = "nfs";
