@@ -33,5 +33,12 @@ in
     # Explicitly disable any graphics-related features
     environment.noXlibs = true;
     hardware.opengl.enable = false;
+
+    # Disable GUI components of nix-index-database
+    programs.command-not-found.enable = false;
+    environment.variables = {
+      WEBKIT_DISABLE_COMPOSITING_MODE = "1";
+      NIXINDEX_NO_GUI = "1";
+    };
   };
 }
