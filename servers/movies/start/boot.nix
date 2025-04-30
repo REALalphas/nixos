@@ -42,6 +42,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader = {
     efi.canTouchEfiVariables = true;
-    timeout = 1; # Reduce boot menu timeout
+    timeout = 5;
   };
 }
