@@ -23,8 +23,6 @@
       nixpkgs-24-11,
       nixpkgs-24-05,
       nixpkgs-23-11,
-      aagl,
-      home-manager,
       nix-index-database,
       ...
     }:
