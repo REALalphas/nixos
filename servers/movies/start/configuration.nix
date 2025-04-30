@@ -29,5 +29,5 @@
   time.timeZone = "Europe/Moscow";
 
   # Configure keymap in X11
-  services.xserver.xkb.layout = "us";
+  # services.xserver.xkb.layout = "us";
 }
