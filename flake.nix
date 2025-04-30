@@ -59,7 +59,9 @@
       stateVersion = config.system.nixosVersion;
 
       nixpkgs =
-        if nixosVersion == "24.11" then
+        if nixosVersion == "unstable" then
+          inputs.nixpkgs-nstbl
+        else if nixosVersion == "24.11" then
           inputs.nixpkgs-24-11
         else if nixosVersion == "24.05" then
           inputs.nixpkgs-24-05
@@ -71,20 +73,6 @@
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
       lib = pkgs.lib;
-
-      getUsersConfigs =
-        configDir:
-        let
-          users = builtins.attrNames (builtins.readDir configDir);
-        in
-        builtins.listToAttrs (
-          map (userName: {
-            name = "${userName}";
-            value = import "${configDir}/${userName}/home.nix";
-          }) users
-        );
-
-      userConfigs = getUsersConfigs ./hosts/${configName}/2home/users;
     in
     {
       nixosConfigurations = {
@@ -99,7 +87,7 @@
           modules = [
             # Add caching
             ./cache.nix
-            ./hosts/${configName}/configuration.nix
+            ./hosts/${configName}
 
             # nix-index-database (nix-locate)
             nix-index-database.nixosModules.nix-index
