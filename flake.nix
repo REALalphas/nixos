@@ -8,12 +8,6 @@
     nixpkgs-24-11.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-23-11.url = "github:nixos/nixpkgs/nixos-23.11";
-
-    # Nix Index
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -23,7 +17,6 @@
       nixpkgs-24-11,
       nixpkgs-24-05,
       nixpkgs-23-11,
-      nix-index-database,
       ...
     }:
     let
@@ -86,13 +79,6 @@
             # Add caching
             ./cache.nix
             ./servers/${configName}
-
-            # nix-index-database (nix-locate) in headless mode
-            ({ ... }: {
-              imports = [ nix-index-database.nixosModules.nix-index ];
-              programs.nix-index-database.enableCommandNotFound = false;
-              programs.nix-index-database.graphics.enable = false;
-            })
 
             # Configuration
             {
