@@ -25,7 +25,6 @@ in
     ];
 
     # Explicitly disable any graphics-related features
-    environment.noXlibs = true;
     hardware.opengl.enable = false;
   };
 }
