@@ -85,7 +85,7 @@
           modules = [
             # Add caching
             ./cache.nix
-            ./hosts/${configName}
+            ./servers/${configName}
 
             # nix-index-database (nix-locate)
             nix-index-database.nixosModules.nix-index
