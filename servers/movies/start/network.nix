@@ -10,7 +10,11 @@
   networking.dhcpcd = {
     enable = true;
     wait = "background"; # Don't wait for DHCP response during boot
-    extraConfig = "noarp"; # Disable ARP to speed up boot
+    extraConfig = ''
+      noarp
+      noipv4ll
+      noipv6
+    '';
   };
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
