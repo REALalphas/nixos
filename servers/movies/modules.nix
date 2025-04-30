@@ -1,4 +1,5 @@
 {
+  system,
   config,
   pkgs,
   ...
