@@ -24,12 +24,6 @@ in
       xorg.xinit
     ];
 
-    # Prevent automatic enabling of graphical features
-    nixpkgs.config.packageOverrides = pkgs: {
-      mesa = null;
-      xorg = null;
-    };
-
     # Explicitly disable any graphics-related features
     environment.noXlibs = true;
     hardware.opengl.enable = false;
