@@ -8,12 +8,12 @@
 
 {
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/f8d11b47-22e0-4fcd-b877-5c7f85a00c2e";
+    device = "/dev/disk/by-label/NIXROOT";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/20F8-9A78";
+    device = "/dev/disk/by-label/NIXBOOT";
     fsType = "vfat";
     options = [
       "fmask=0022"

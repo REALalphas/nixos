@@ -26,7 +26,7 @@
     {
       wantedBy = [ "multi-user.target" ];
       automountConfig = {
-        TimeoutIdleSec = "600";
+        TimeoutIdleSec = "5";
       };
       where = "/mnt/web-2xl/dump";
     }
