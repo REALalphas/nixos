@@ -17,6 +17,10 @@
     '';
   };
   networking.useDHCP = lib.mkDefault true;
+  networking.interfaces.enp6s0.ipv4.addresses = [{
+    address = "10.20.20.9";
+    prefixLength = 24;
+  }]
   # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
 
   # networking.hostName = ""; #!!! Define your hostname in /config.nix
