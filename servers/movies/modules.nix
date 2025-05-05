@@ -5,7 +5,7 @@
 }:
 
 {
-  system.headless = true;
+  system.headless = false;
   system.nix-tree = true;
   system.sonarr = true;
   system.git = true;
