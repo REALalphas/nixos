@@ -17,7 +17,7 @@
       mountConfig = {
         Options = "noatime,noac,actimeo=3";
       };
-      what = "web.xl:/mnt/M2/user/alphas";
+      what = "10.143.241.1:/mnt/M2/user/alphas";
       where = "/mnt/web-2xl/dump";
     }
   ];
