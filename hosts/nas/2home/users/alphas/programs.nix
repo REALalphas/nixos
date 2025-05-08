@@ -19,26 +19,29 @@
     enableExtensionUpdateCheck = true;
 
     package = pkgs.vscode;
-    extensions = with pkgs.vscode-extensions; [
-      pkief.material-product-icons
-      # Language support
-      bbenoist.nix
-      # Formatter # See packages.nix
-      jnoortheen.nix-ide
-    ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-      {
-        name = "beardedtheme";
-        publisher = "BeardedBear";
-        version = "9.1.4";
-        sha256 = "44be98928d2eb2d9bfe04af2fc96cd39a65489082f49bbd0bdde129907fca163";
-      }
-      {
-        name = "gruvbox-material-icon-theme";
-        publisher = "JonathanHarty";
-        version = "1.1.5";
-        sha256 = "f3a51652e58a4fa69dc78870e0e270ddc499c5664a2c7e2e2d33be4ac83be606";
-      }
-    ];
+    extensions =
+      with pkgs.vscode-extensions;
+      [
+        pkief.material-product-icons
+        # Language support
+        bbenoist.nix
+        # Formatter # See packages.nix
+        jnoortheen.nix-ide
+      ]
+      ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "beardedtheme";
+          publisher = "BeardedBear";
+          version = "9.1.4";
+          sha256 = "44be98928d2eb2d9bfe04af2fc96cd39a65489082f49bbd0bdde129907fca163";
+        }
+        {
+          name = "gruvbox-material-icon-theme";
+          publisher = "JonathanHarty";
+          version = "1.1.5";
+          sha256 = "f3a51652e58a4fa69dc78870e0e270ddc499c5664a2c7e2e2d33be4ac83be606";
+        }
+      ];
 
     userSettings = {
       # General settings

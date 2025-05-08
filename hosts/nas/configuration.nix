@@ -1,8 +1,6 @@
 {
-  config,
   lib,
   pkgs,
-  modulesPath,
   overlays,
   ...
 }:
@@ -29,7 +27,7 @@
   services.xserver.enable = true;
   services.xserver.excludePackages = with pkgs; [
     # Simple terminal
-    pkgs.xterm
+    xterm
   ];
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;

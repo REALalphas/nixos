@@ -1,4 +1,7 @@
-{ config, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   # Disable CUPS to print documents.
   services.printing.enable = false;

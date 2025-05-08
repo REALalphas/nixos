@@ -1,4 +1,4 @@
-{ config, options, pkgs, ... }:
+{ ... }:
 {
   # Nix-ld (run unpatched dynamic binaries)
   # programs.nix-ld.enable = true;

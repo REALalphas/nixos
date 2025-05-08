@@ -1,4 +1,10 @@
-{ config, lib, pkgs, modulesPath, overlays, ... }: {
+{
+  lib,
+  pkgs,
+  overlays,
+  ...
+}:
+{
   imports = [
     ./0system/0hardware.nix
     ./0system/1boot.nix
@@ -19,45 +25,47 @@
   ## GNOME DE
   # Enable the X11 windowing system. (Also wayland)
   services.xserver.enable = true;
-  services.xserver.excludePackages = with pkgs;
-    [
-      # Simple terminal
-      pkgs.xterm
-    ];
+  services.xserver.excludePackages = with pkgs; [
+    # Simple terminal
+    xterm
+  ];
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   # Excluded apps from gnome installation
-  environment.gnome.excludePackages = (with pkgs; [
-    # Photos app
-    gnome-photos
-    # Welcome tour
-    gnome-tour
-    # Camera app
-    snapshot
-    # Gnome password manager
-    gnome-secrets
-    # VNC/RDP Client
-    gnome-connections
-    # Browser
-    epiphany
-    # Maps app
-    gnome-maps
-    # Contacts list
-    gnome-contacts
-    # Music player
-    gnome-music
-    # Simple scan
-    simple-scan
-    # Video player
-    totem
-    # Camera app (old)
-    cheese
-    # Gnome password manager and encryption keys
-    seahorse
-    # Help app
-    yelp
-  ]);
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
+      # Photos app
+      gnome-photos
+      # Welcome tour
+      gnome-tour
+      # Camera app
+      snapshot
+      # Gnome password manager
+      gnome-secrets
+      # VNC/RDP Client
+      gnome-connections
+      # Browser
+      epiphany
+      # Maps app
+      gnome-maps
+      # Contacts list
+      gnome-contacts
+      # Music player
+      gnome-music
+      # Simple scan
+      simple-scan
+      # Video player
+      totem
+      # Camera app (old)
+      cheese
+      # Gnome password manager and encryption keys
+      seahorse
+      # Help app
+      yelp
+    ]
+  );
 
   # KVM Support
   virtualisation.libvirtd = {
@@ -86,13 +94,15 @@
     QT_QPA_PLATFORMTHEME = "gnome";
     QT_STYLE_OVERRIDE = "adwaita-dark";
     # GStreamer, nautilus fix (File properties)
-    GST_PLUGIN_SYSTEM_PATH_1_0 =
-      lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (with pkgs.gst_all_1; [
+    GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (
+      with pkgs.gst_all_1;
+      [
         gst-plugins-good
         gst-plugins-bad
         gst-plugins-ugly
         gst-libav
-      ]);
+      ]
+    );
   };
 
   # Allow unfree packages

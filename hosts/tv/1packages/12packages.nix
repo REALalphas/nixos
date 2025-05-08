@@ -1,4 +1,7 @@
-{ config, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   # !!! List packages installed in SYSTEM
   # To search run: `$ nix search wget`
