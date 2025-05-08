@@ -7,9 +7,16 @@
   home.packages = (
     with pkgs;
     [
+      # Github CLI
+      gh
       # Flatpak
       unstable.flatpak
       unstable.gnome-software
+
+      # Zed Editor
+      unstable.zed-editor
+      # Nix Language Server
+      nixd
 
       ### Web Browsers
       # Vivaldi web browser
