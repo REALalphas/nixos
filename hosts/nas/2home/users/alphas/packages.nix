@@ -19,9 +19,9 @@
       gh                      # GitHub CLI
 
       # Development Tools
-      # nixpkgs-fmt            # Nix formatter
-      # unstable.alpaca        # GTK4 Ollama client
-      insomnia               # API Testing platform
+      # unstable.alpaca       # GTK4 Ollama client
+      unstable.nixfmt-rfc-style # Nix formatter
+      insomnia                # API Testing platform
 
       # Programming Languages
       lua                     # Lua interpreter
@@ -65,13 +65,13 @@
       unstable.osu-lazer-bin # Rhythm game
       rpcs3                  # PS3 emulator
       nix23-11.yuzu-mainline # Nintendo Switch Emulator
-      prismlauncher         # Minecraft launcher
+      prismlauncher          # Minecraft launcher
 
       #######################
       # Productivity
       #######################
 
-      obsidian              # Note taking application
+      obsidian               # Note taking application
 
       ################################
       # Currently Disabled Packages
