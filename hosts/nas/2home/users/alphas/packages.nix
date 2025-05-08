@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   ...
 }:
@@ -7,104 +6,95 @@
   home.packages = (
     with pkgs;
     [
-      # Github CLI
-      gh
-      # Flatpak
+      #######################
+      # Development Tools
+      #######################
+
+      # Editors and LSP
+      unstable.zed-editor     # Modern code editor
+      nixd                    # Nix Language Server
+      nil                     # Alternative Nix Language Server
+
+      # Version Control
+      gh                      # GitHub CLI
+
+      # Development Tools
+      # nixpkgs-fmt            # Nix formatter
+      # unstable.alpaca        # GTK4 Ollama client
+      insomnia               # API Testing platform
+
+      # Programming Languages
+      lua                     # Lua interpreter
+      luajitPackages.luarocks # Lua package manager
+
+      #######################
+      # System & Utilities
+      #######################
+
+      # Package Management
       unstable.flatpak
       unstable.gnome-software
 
-      # Zed Editor
-      unstable.zed-editor
-      # Nix Language Server
-      nixd
+      # System Tools
+      unstable.spoofdpi      # TCP Traffic Shaker
+      ddcutil                # Monitor control utility
 
-      ### Web Browsers
-      # Vivaldi web browser
+      #######################
+      # Security & Privacy
+      #######################
+
+      keepassxc              # Password manager
+
+      #######################
+      # Communication
+      #######################
+
+      vesktop                # Discord Web client with Wayland support
+      element-desktop        # Matrix chat client
+
+      #######################
+      # Media & Entertainment
+      #######################
+
+      # Media Applications
+      unstable.identity      # Image/video comparison tool
+      unstable.spotify       # Music streaming client
+      pinta                  # Image editor (Paint.NET alternative)
+
+      # Gaming
+      unstable.osu-lazer-bin # Rhythm game
+      rpcs3                  # PS3 emulator
+      nix23-11.yuzu-mainline # Nintendo Switch Emulator
+      prismlauncher         # Minecraft launcher
+
+      #######################
+      # Productivity
+      #######################
+
+      obsidian              # Note taking application
+
+      ################################
+      # Currently Disabled Packages
+      ################################
+
+      # Web Browsers
       # unstable.vivaldi
       # unstable.vivaldi-ffmpeg-codecs
-
-      # Tor Browser - Privacy-focused browser
       # unstable.tor-browser
-
-      # Floorp web browser
       # unstable.floorp
       # vdhcoapp
-
-      # Firefox Developer Edition
       # firefox-devedition
 
-      ### Security & Privacy
-      # Password manager
-      keepassxc
+      # Development
+      # unstable.beekeeper-studio    # SQL client
 
-      ### Media & Entertainment
-      # osu!lazer - Rhythm game
+      # Gaming & Streaming
+      # moonlight-qt               # Game streaming client
       # inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
-      unstable.osu-lazer-bin
 
-      # Image/video version comparison tool
-      unstable.identity
-
-      # Music streaming client
-      unstable.spotify
-
-      ### Communication
-      # Discord Web client with Wayland support
-      vesktop
-
-      # Matrix chat client
-      element-desktop
-
-      ### Development
-      # Nix formatter # See programs.nix
-      nixpkgs-fmt
-
-      # GTK4 Ollama client # See 10services.nix
-      unstable.alpaca
-
-      # Lua development
-      lua
-      luajitPackages.luarocks
-
-      # Modern SQL client
-      # unstable.beekeeper-studio
-
-      ### Gaming & Emulation
-      # PS3 emulator/debugger
-      rpcs3
-
-      # Nintendo Switch Emulator
-      nix23-11.yuzu-mainline
-
-      # Minecraft launcher
-      prismlauncher
-
-      # Game streaming client
-      # moonlight-qt
-
-      ### System Utilities
-      # TCP Traffic Shaker
-      unstable.spoofdpi
-
-      # Monitor control utility
-      ddcutil
-
-      ### Creative Tools
-      # Image editor similar to Paint.NET
-      pinta
-
-      # Note taking application
-      obsidian
-
-      # Remote desktop
-      # unstable.rustdesk-flutter
-
-      # API Testing platform
-      insomnia
-
-      ### Finance
-      # Cryptocurrency wallet
-      # exodus
+      # Utilities & Other
+      # unstable.rustdesk-flutter  # Remote desktop
+      # exodus                     # Cryptocurrency wallet
     ]
   );
 }
