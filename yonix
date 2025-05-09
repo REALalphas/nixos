@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.65"
+VERSION="0.66"
 
 # Prevent re-execution after sudo
 SUDO_REEXEC=${SUDO_REEXEC:-false}
@@ -46,19 +46,19 @@ reset_nix_dir() {
 }
 
 # Logging functions
-log_info() { 
+log_info() {
     # Log an informational message.
     [ "$quiet_mode" = false ] && echo -e "${BLUE}[INFO]${NC} $1"
 }
-log_success() { 
+log_success() {
     # Log a success message.
     [ "$quiet_mode" = false ] && echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
-log_warning() { 
+log_warning() {
     # Log a warning message.
     [ "$quiet_mode" = false ] && echo -e "${YELLOW}[WARNING]${NC} $1"
 }
-log_error() { 
+log_error() {
     # Log an error message.
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
@@ -105,7 +105,7 @@ run_with_spinner() {
     local msg="$2"
     local show_output="${3:-false}"
     local result=0
-    
+
     if [ "$quiet_mode" = true ]; then
         eval "$cmd" > /dev/null 2>&1 || result=$?
     elif [ "$show_output" = true ]; then
@@ -114,7 +114,7 @@ run_with_spinner() {
         eval "$cmd" > /dev/null 2>&1 & spinner $! "$msg"
         wait $! || result=$?
     fi
-    
+
     [ $result -ne 0 ] && handle_error "Command failed: $cmd (Exit code: $result)"
     return $result
 }
@@ -132,7 +132,7 @@ show_help() {
     cat << EOF
 Yonix - NixOS System Management Utility v${VERSION}
 
-Usage: 
+Usage:
     yonix <command> [options]
 
 Commands:
@@ -284,22 +284,22 @@ update_system() {
     # Perform a system update: validate configuration, possibly update git, copy files, and rebuild.
     log_info "Starting system update..."
     check_rsync
-    
+
     # Only run git operations on first execution (non-sudo)
     if [ "$SUDO_REEXEC" = false ]; then
         check_git
         check_nix_config
-        
+
         check_git_updates
         local git_status=$?
-        
+
         if [ $git_status -eq 2 ]; then
             log_success "Git repository updated successfully"
         fi
     fi
 
     check_sudo
-    
+
     copy_config_files
     cd /etc/nixos || handle_error "Failed to change directory"
 
@@ -325,22 +325,22 @@ upgrade_system() {
     # Upgrade the system: optionally update the git repo, then copy files and rebuild.
     log_info "Starting system upgrade..."
     check_rsync
-    
+
     # Only run git operations on first execution (non-sudo)
     if [ "$SUDO_REEXEC" = false ]; then
         check_git
         check_nix_config
-        
+
         check_git_updates
         local git_status=$?
-        
+
         if [ $git_status -eq 2 ]; then
             log_success "Git repository updated successfully"
         fi
     fi
 
     check_sudo
-    
+
     copy_config_files
     cd /etc/nixos || handle_error "Failed to change directory"
 
@@ -387,7 +387,7 @@ trace_build() {
     check_sudo
     check_rsync
     check_nix_config
-    
+
     prepare_nixos_directory
     cd /etc/nixos || handle_error "Failed to change directory"
 
@@ -408,9 +408,9 @@ build_new() {
     check_sudo
     check_rsync
     check_nix_config
-    
+
     prepare_nixos_directory
-    
+
     read -p "Enter hostname: " hostname
     sudo hostname $hostname || handle_error "Failed to set hostname"
     cd /etc/nixos || handle_error "Failed to change directory"
@@ -578,7 +578,7 @@ done
 
 # Modify spinner function if quiet mode is enabled
 if [ "$quiet_mode" = true ]; then
-    spinner() { 
+    spinner() {
         local pid=$1
         while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do sleep 0.1; done
     }
