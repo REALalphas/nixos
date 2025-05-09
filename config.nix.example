@@ -1,7 +1,7 @@
-# 
+#
 # FIXME: Rename this file to config.nix and change the configurationName to your hostname.
-# 
-{ lib, pkgs, ... }:
+#
+{ ... }:
 
 {
   # Configuration name and hostname

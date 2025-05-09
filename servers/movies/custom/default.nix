@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}:
+{ ... }:
 let
   dir = ./.;
   files = builtins.readDir dir;
