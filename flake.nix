@@ -51,7 +51,11 @@
       configName = config.system.configurationName;
       hostname = config.system.configurationName;
       nixosVersion = config.system.nixosVersion;
-      stateVersion = config.system.nixosVersion;
+      stateVersion =
+        if nixosVersion == "unstable" then
+            "25.05"
+        else
+            nixosVersion;
 
       nixpkgs =
         if nixosVersion == "unstable" then
