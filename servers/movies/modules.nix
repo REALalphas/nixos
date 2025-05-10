@@ -1,9 +1,8 @@
 { ... }:
 
 {
-  system.headless = false;
+  system.headless = true;
   system.nix-tree = true;
-  system.sonarr = true;
-  system.radarr = true;
+  system.podman = true;
   system.git = true;
 }
