@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.7"
+VERSION="0.71"
 
 # Prevent re-execution after sudo
 SUDO_REEXEC=${SUDO_REEXEC:-false}
@@ -388,11 +388,32 @@ clean_system() {
     check_sudo
     cd /etc/nixos || handle_error "Failed to change directory"
 
+    # Clean system journals and logs
     run_with_spinner "sudo journalctl --vacuum-time=2d" "Cleaning journals (2d+)" false
+    run_with_spinner "sudo rm -rf /tmp/* /var/tmp/*" "Cleaning temporary files" false
+
+    # Clean Docker if installed
+    if command -v docker &> /dev/null; then
+        log_info "Cleaning Docker resources..."
+        run_with_spinner "docker system prune -af" "Cleaning unused Docker resources" false
+        run_with_spinner "docker volume prune -f" "Cleaning unused Docker volumes" false
+    fi
+
+    # Clean Podman if installed
+    if command -v podman &> /dev/null; then
+        log_info "Cleaning Podman resources..."
+        run_with_spinner "podman system prune -af" "Cleaning unused Podman resources" false
+        run_with_spinner "podman volume prune -f" "Cleaning unused Podman volumes" false
+    fi
+
+    # Clean Nix store and generations
     run_with_spinner "sudo nix-env --delete-generations 14d" "Removing old generations (14d+)" false
     run_with_spinner "sudo nix-store --gc --print-dead" "Collecting garbage from nix-store" false
     run_with_spinner "sudo nix-collect-garbage -d" "Removing garbage" false
     run_with_spinner "sudo nix-store --optimise" "Optimizing store" false
+
+    # Clean package caches
+    run_with_spinner "sudo rm -rf /var/cache/nixos/*" "Cleaning NixOS cache" false
 
     log_success "System cleanup completed"
 }
