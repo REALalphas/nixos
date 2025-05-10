@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.72"
+VERSION="0.73"
 
 # Prevent re-execution after sudo
 SUDO_REEXEC=${SUDO_REEXEC:-false}
@@ -404,14 +404,14 @@ clean_system() {
         run_with_spinner "podman volume prune -f" "Cleaning unused Podman volumes" false
     fi
 
+    # Clean package caches
+    run_with_spinner "sudo rm -rf /var/cache/nixos/*" "Cleaning NixOS cache" false
+
     # Clean Nix store and generations
     run_with_spinner "sudo nix-env --delete-generations 14d" "Removing old generations (14d+)" false
     run_with_spinner "sudo nix-store --gc --print-dead" "Collecting garbage from nix-store" false
     run_with_spinner "sudo nix-collect-garbage -d" "Removing garbage" false
     run_with_spinner "sudo nix-store --optimise" "Optimizing store" false
-
-    # Clean package caches
-    run_with_spinner "sudo rm -rf /var/cache/nixos/*" "Cleaning NixOS cache" false
 
     log_success "System cleanup completed"
 }
