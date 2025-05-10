@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.66"
+VERSION="0.7"
 
 # Prevent re-execution after sudo
 SUDO_REEXEC=${SUDO_REEXEC:-false}
@@ -147,6 +147,7 @@ Commands:
 
 Options:
     --no-flakes   Run without flakes support
+    --remove      Remove everything from /etc/nixos before operation
     -h, --help    Show this help message
     -v, --version Show version information
     -q, --quiet   Suppress spinner and progress output
@@ -265,6 +266,15 @@ check_git_status() {
 copy_config_files() {
     # Copy the current configuration files to /etc/nixos using rsync.
     save_nix_dir
+
+    # Handle removal if flag is set
+    if [ "$remove_nixos" = true ]; then
+        log_warning "Removing all content from /etc/nixos"
+        run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Removing /etc/nixos contents" false
+    elif [ ! -d "/etc/nixos" ]; then
+        run_with_spinner "sudo mkdir -p /etc/nixos" "Creating /etc/nixos directory" false
+    fi
+
     local current_dir
     current_dir=$(escape_path "$(pwd)")
     run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
@@ -272,8 +282,14 @@ copy_config_files() {
 
 # Add helper to prepare /etc/nixos directory (for trace and build)
 prepare_nixos_directory() {
-    # Clear the existing /etc/nixos directory and set it up with the current configuration.
-    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing /etc/nixos directory" false
+    # Conditionally clear the existing /etc/nixos directory based on remove_nixos flag
+    if [ "$remove_nixos" = true ]; then
+        log_warning "Removing all content from /etc/nixos"
+        run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Removing /etc/nixos contents" false
+    elif [ ! -d "/etc/nixos" ]; then
+        run_with_spinner "sudo mkdir -p /etc/nixos" "Creating /etc/nixos directory" false
+    fi
+
     save_nix_dir
     local current_dir
     current_dir=$(escape_path "$(pwd)")
@@ -443,6 +459,7 @@ show_nix_dir() {
 # Default settings
 use_flakes=true
 quiet_mode=false
+remove_nixos=false
 command=""
 
 # Add function to check for updates in current directory
@@ -554,6 +571,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --no-flakes)
             use_flakes=false
+            shift
+            ;;
+        --remove)
+            remove_nixos=true
             shift
             ;;
         -q|--quiet)
