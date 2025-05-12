@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.66"
+VERSION="0.76"
 
 # Prevent re-execution after sudo
 SUDO_REEXEC=${SUDO_REEXEC:-false}
@@ -147,6 +147,7 @@ Commands:
 
 Options:
     --no-flakes   Run without flakes support
+    --remove      Remove everything from /etc/nixos before operation
     -h, --help    Show this help message
     -v, --version Show version information
     -q, --quiet   Suppress spinner and progress output
@@ -182,7 +183,7 @@ check_rsync() {
     # Confirm that 'rsync' is installed; prompt to open a nix-shell to install it if missing.
     if ! command -v rsync &> /dev/null; then
         log_warning "rsync is not installed"
-        echo -e "${YELLOW}Would you like to enter nix-shell with rsync? (y/n)${NC}"
+        echo -e "${YELLOW}Would you like to enter nix-shell with rsync? (y/N)${NC}"
         read -r answer
         if [[ "$answer" == "y" ]]; then
             nix-shell -p rsync
@@ -197,7 +198,7 @@ check_git() {
     # Confirm that 'git' is installed; prompt to open a nix-shell if it is missing.
     if ! command -v git &> /dev/null; then
         log_warning "git is not installed"
-        echo -e "${YELLOW}Would you like to enter nix-shell with git? (y/n)${NC}"
+        echo -e "${YELLOW}Would you like to enter nix-shell with git? (y/N)${NC}"
         read -r answer
         if [[ "$answer" == "y" ]]; then
             nix-shell -p git
@@ -221,7 +222,7 @@ check_git_updates() {
             return 0
         elif [ "$LOCAL" = "$BASE" ]; then
             log_warning "Git repository needs to be updated"
-            echo -e "${YELLOW}Would you like to pull updates? (y/n)${NC}"
+            echo -e "${YELLOW}Would you like to pull updates? (y/N)${NC}"
             read -r answer
             if [[ "$answer" == "y" ]]; then
                 run_with_spinner "git pull" "Pulling updates from remote repository" true
@@ -265,6 +266,15 @@ check_git_status() {
 copy_config_files() {
     # Copy the current configuration files to /etc/nixos using rsync.
     save_nix_dir
+
+    # Handle removal if flag is set
+    if [ "$remove_nixos" = true ]; then
+        log_warning "Removing all content from /etc/nixos"
+        run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Removing /etc/nixos contents" false
+    elif [ ! -d "/etc/nixos" ]; then
+        run_with_spinner "sudo mkdir -p /etc/nixos" "Creating /etc/nixos directory" false
+    fi
+
     local current_dir
     current_dir=$(escape_path "$(pwd)")
     run_with_spinner "sudo rsync -av --exclude='.git' --update \"${current_dir}/\" /etc/nixos/" "Copying configuration files to /etc/nixos" false
@@ -272,8 +282,14 @@ copy_config_files() {
 
 # Add helper to prepare /etc/nixos directory (for trace and build)
 prepare_nixos_directory() {
-    # Clear the existing /etc/nixos directory and set it up with the current configuration.
-    run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Preparing /etc/nixos directory" false
+    # Conditionally clear the existing /etc/nixos directory based on remove_nixos flag
+    if [ "$remove_nixos" = true ]; then
+        log_warning "Removing all content from /etc/nixos"
+        run_with_spinner "sudo rm -rf /etc/nixos/ && sudo mkdir /etc/nixos" "Removing /etc/nixos contents" false
+    elif [ ! -d "/etc/nixos" ]; then
+        run_with_spinner "sudo mkdir -p /etc/nixos" "Creating /etc/nixos directory" false
+    fi
+
     save_nix_dir
     local current_dir
     current_dir=$(escape_path "$(pwd)")
@@ -372,7 +388,26 @@ clean_system() {
     check_sudo
     cd /etc/nixos || handle_error "Failed to change directory"
 
+    # Clean system journals and logs
     run_with_spinner "sudo journalctl --vacuum-time=2d" "Cleaning journals (2d+)" false
+    run_with_spinner "sudo rm -rf /tmp/* /var/tmp/*" "Cleaning temporary files" false
+
+    # Clean Docker if installed
+    if command -v docker &> /dev/null; then
+        run_with_spinner "docker system prune -af" "Cleaning unused Docker resources" false
+        run_with_spinner "docker volume prune -f" "Cleaning unused Docker volumes" false
+    fi
+
+    # Clean Podman if installed
+    if command -v podman &> /dev/null; then
+        run_with_spinner "podman system prune -af" "Cleaning unused Podman resources" false
+        run_with_spinner "podman volume prune -f" "Cleaning unused Podman volumes" false
+    fi
+
+    # Clean package caches
+    run_with_spinner "sudo rm -rf /var/cache/nixos/*" "Cleaning NixOS cache" false
+
+    # Clean Nix store and generations
     run_with_spinner "sudo nix-env --delete-generations 14d" "Removing old generations (14d+)" false
     run_with_spinner "sudo nix-store --gc --print-dead" "Collecting garbage from nix-store" false
     run_with_spinner "sudo nix-collect-garbage -d" "Removing garbage" false
@@ -443,16 +478,18 @@ show_nix_dir() {
 # Default settings
 use_flakes=true
 quiet_mode=false
+remove_nixos=false
 command=""
 
-# Add function to check for updates in current directory
+# Add function to check for updates in current directory (max 2 levels deep) and nix-dir
 check_for_updates() {
     local current_dir="$(pwd)"
+    local nix_dir="$(get_nix_dir)"
     local current_version="$VERSION"
     local newest_version=""
     local newest_file=""
 
-    # Search for yonix files in current directory and subdirectories
+    # Search for yonix files in current directory and subdirectories (max 2 levels)
     while IFS= read -r file; do
         if [[ -f "$file" && -x "$file" ]]; then
             local ver=$(grep "^VERSION=" "$file" | cut -d'"' -f2)
@@ -461,11 +498,24 @@ check_for_updates() {
                 newest_file="$file"
             fi
         fi
-    done < <(find "$current_dir" -name "yonix" 2>/dev/null)
+    done < <(find "$current_dir" -maxdepth 2 -name "yonix" 2>/dev/null)
+
+    # Also check nix-dir if it exists and is different from current directory
+    if [[ -d "$nix_dir" && "$nix_dir" != "$current_dir" ]]; then
+        while IFS= read -r file; do
+            if [[ -f "$file" && -x "$file" ]]; then
+                local ver=$(grep "^VERSION=" "$file" | cut -d'"' -f2)
+                if [[ ! -z "$ver" && "$ver" > "$current_version" ]]; then
+                    newest_version="$ver"
+                    newest_file="$file"
+                fi
+            fi
+        done < <(find "$nix_dir" -name "yonix" 2>/dev/null)
+    fi
 
     if [[ ! -z "$newest_file" ]]; then
         log_info "Found newer version v${newest_version} in ${newest_file}"
-        echo -e "${YELLOW}Would you like to update? (y/n)${NC}"
+        echo -e "${YELLOW}Would you like to update? (y/N)${NC}"
         read -r answer
         if [[ "$answer" == "y" ]]; then
             cp "$newest_file" "$HOME/.local/bin/yonix"
@@ -554,6 +604,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --no-flakes)
             use_flakes=false
+            shift
+            ;;
+        --remove)
+            remove_nixos=true
             shift
             ;;
         -q|--quiet)
