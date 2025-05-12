@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.73"
+VERSION="0.76"
 
 # Prevent re-execution after sudo
 SUDO_REEXEC=${SUDO_REEXEC:-false}
@@ -183,7 +183,7 @@ check_rsync() {
     # Confirm that 'rsync' is installed; prompt to open a nix-shell to install it if missing.
     if ! command -v rsync &> /dev/null; then
         log_warning "rsync is not installed"
-        echo -e "${YELLOW}Would you like to enter nix-shell with rsync? (y/n)${NC}"
+        echo -e "${YELLOW}Would you like to enter nix-shell with rsync? (y/N)${NC}"
         read -r answer
         if [[ "$answer" == "y" ]]; then
             nix-shell -p rsync
@@ -198,7 +198,7 @@ check_git() {
     # Confirm that 'git' is installed; prompt to open a nix-shell if it is missing.
     if ! command -v git &> /dev/null; then
         log_warning "git is not installed"
-        echo -e "${YELLOW}Would you like to enter nix-shell with git? (y/n)${NC}"
+        echo -e "${YELLOW}Would you like to enter nix-shell with git? (y/N)${NC}"
         read -r answer
         if [[ "$answer" == "y" ]]; then
             nix-shell -p git
@@ -222,7 +222,7 @@ check_git_updates() {
             return 0
         elif [ "$LOCAL" = "$BASE" ]; then
             log_warning "Git repository needs to be updated"
-            echo -e "${YELLOW}Would you like to pull updates? (y/n)${NC}"
+            echo -e "${YELLOW}Would you like to pull updates? (y/N)${NC}"
             read -r answer
             if [[ "$answer" == "y" ]]; then
                 run_with_spinner "git pull" "Pulling updates from remote repository" true
@@ -481,14 +481,15 @@ quiet_mode=false
 remove_nixos=false
 command=""
 
-# Add function to check for updates in current directory
+# Add function to check for updates in current directory (max 2 levels deep) and nix-dir
 check_for_updates() {
     local current_dir="$(pwd)"
+    local nix_dir="$(get_nix_dir)"
     local current_version="$VERSION"
     local newest_version=""
     local newest_file=""
 
-    # Search for yonix files in current directory and subdirectories
+    # Search for yonix files in current directory and subdirectories (max 2 levels)
     while IFS= read -r file; do
         if [[ -f "$file" && -x "$file" ]]; then
             local ver=$(grep "^VERSION=" "$file" | cut -d'"' -f2)
@@ -497,11 +498,24 @@ check_for_updates() {
                 newest_file="$file"
             fi
         fi
-    done < <(find "$current_dir" -name "yonix" 2>/dev/null)
+    done < <(find "$current_dir" -maxdepth 2 -name "yonix" 2>/dev/null)
+
+    # Also check nix-dir if it exists and is different from current directory
+    if [[ -d "$nix_dir" && "$nix_dir" != "$current_dir" ]]; then
+        while IFS= read -r file; do
+            if [[ -f "$file" && -x "$file" ]]; then
+                local ver=$(grep "^VERSION=" "$file" | cut -d'"' -f2)
+                if [[ ! -z "$ver" && "$ver" > "$current_version" ]]; then
+                    newest_version="$ver"
+                    newest_file="$file"
+                fi
+            fi
+        done < <(find "$nix_dir" -name "yonix" 2>/dev/null)
+    fi
 
     if [[ ! -z "$newest_file" ]]; then
         log_info "Found newer version v${newest_version} in ${newest_file}"
-        echo -e "${YELLOW}Would you like to update? (y/n)${NC}"
+        echo -e "${YELLOW}Would you like to update? (y/N)${NC}"
         read -r answer
         if [[ "$answer" == "y" ]]; then
             cp "$newest_file" "$HOME/.local/bin/yonix"
