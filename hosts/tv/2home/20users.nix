@@ -18,6 +18,19 @@ let
         "dialout"
       ];
     }
+    {
+      name = "ainz";
+      description = "Ainz";
+      groups = [
+        "networkmanager"
+        "wheel"
+        "libvirtd"
+        "adbusers"
+        "video"
+        "i2c"
+        "dialout"
+      ];
+    }
   ];
 
   users = builtins.listToAttrs (

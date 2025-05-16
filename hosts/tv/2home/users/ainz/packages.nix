@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ inputs, pkgs, ... }:
 {
   home.packages =
     (with pkgs; [
@@ -22,7 +19,7 @@
 
       ### Security & Privacy
       # Password manager
-      # keepassxc
+      keepassxc
 
       ### Media & Entertainment
       # osu!lazer - Rhythm game
@@ -33,11 +30,11 @@
       # unstable.identity
 
       # Music streaming client
-      # unstable.spotify
+      unstable.spotify
 
       ### Communication
       # Discord Web client with Wayland support
-      # vesktop
+      vesktop
 
       # Matrix chat client
       # element-desktop
@@ -61,7 +58,7 @@
       # nix23-11.yuzu-mainline
 
       # Minecraft launcher
-      # prismlauncher
+      prismlauncher
 
       # Game streaming client
       # moonlight-qt
@@ -86,22 +83,19 @@
 
     ])
     ### GNOME Extensions
-    (
-      with pkgs.gnomeExtensions;
-      [
-        # Tray icons
-        appindicator
-        # Shell blur
-        blur-my-shell
-        # Connector for phone
-        gsconnect
-        # Hides bar to allow waydroid full screen
-        hide-top-bar
-        # Don't show overview on start
-        no-overview
+    ++ (with pkgs.gnomeExtensions; [
+      # Tray icons
+      appindicator
+      # Shell blur
+      blur-my-shell
+      # Connector for phone
+      gsconnect
+      # Hides bar to allow waydroid full screen
+      hide-top-bar
+      # Don't show overview on start
+      no-overview
 
-      ]
-    );
+    ]);
   # Enabled extensions
   dconf.settings."org/gnome/shell" = {
     disable-user-extensions = false;

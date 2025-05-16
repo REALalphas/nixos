@@ -57,12 +57,12 @@
       unstable.decibels
 
       # Video players
-      # mpv
-      # mplayer
-      # smplayer
+      mpv
+      mplayer
+      smplayer
 
       # Simple image viewer application written with GTK4 and Rust
-      # unstable.loupe
+      unstable.loupe
 
       ### Media Creation
       # Free and open source software for video recording and live streaming
@@ -79,7 +79,7 @@
 
       ### Audio Tools
       # Audio effects for PipeWire applications
-      # easyeffects
+      easyeffects
       # GTK patchbay for PipeWire
       # helvum
 
@@ -134,7 +134,7 @@
 
       ### Communication
       # Secure messaging application
-      # signal-desktop
+      signal-desktop
 
       # Cross-platform universal messaging app
       # beeper
@@ -154,7 +154,7 @@
 
       ### File Sharing
       # BitTorrent Client
-      # unstable.qbittorrent
+      qbittorrent
 
       ### Image Processing
       # Simple & useful image compressor
@@ -180,6 +180,9 @@
 
       # Ladybird Browser (Fork from SerenityOS)
       # unstable.ladybird
+
+      # Epiphany Browser (WebKit Browser from Gnome)
+      epiphany
     ]
   );
 }
