@@ -4,8 +4,8 @@
     (with pkgs; [
       ### Web Browsers
       # Vivaldi web browser
-      # unstable.vivaldi
-      # unstable.vivaldi-ffmpeg-codecs
+      unstable.vivaldi
+      unstable.vivaldi-ffmpeg-codecs
 
       # Tor Browser - Privacy-focused browser
       # unstable.tor-browser
@@ -75,7 +75,7 @@
       # pinta
 
       # Note taking application
-      # obsidian
+      obsidian
 
       ### Finance
       # Cryptocurrency wallet
@@ -103,7 +103,7 @@
       blur-my-shell.extensionUuid
       gsconnect.extensionUuid
       appindicator.extensionUuid
-      hide-top-bar.extensionUuid
+      # hide-top-bar.extensionUuid
       no-overview.extensionUuid
     ];
   };

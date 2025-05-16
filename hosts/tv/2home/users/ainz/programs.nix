@@ -7,8 +7,8 @@
   # Git
   programs.git = {
     enable = true;
-    userName = "AlphaS";
-    userEmail = "ar.su0104@gmail.com";
+    userName = "AOG";
+    userEmail = "flava.hustle.hard@gmail.com";
   };
 
   # Visual Studio Code
@@ -54,8 +54,8 @@
       "workbench.iconTheme" = "gruvbox-material-icon-theme";
       "workbench.productIconTheme" = "material-product-icons";
       "workbench.tree.renderIndentGuides" = "always";
-      "workbench.tree.indent" = 26;
-      "workbench.sideBar.location" = "right";
+      "workbench.tree.indent" = 15;
+      "workbench.sideBar.location" = "left";
       # Editor settings
       "editor.formatOnSave" = true;
       "editor.smoothScrolling" = true;

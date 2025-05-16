@@ -39,10 +39,10 @@ in
     "org/gnome/shell".favorite-apps = [
       "org.gnome.Nautilus.desktop"
       "org.gnome.Console.desktop"
-      "org.gnome.Geary.desktop"
       "firefox-devedition.desktop"
       "code.desktop"
       "vesktop.desktop"
+      "spotify.desktop"
     ];
     # Add qemu handler for VMs
     "org/virt-manager/virt-manager/connections" = {
