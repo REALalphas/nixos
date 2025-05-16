@@ -58,15 +58,15 @@
   # systemd.services.lactd.wantedBy = ["multi-user.target"];
 
   # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "alphas";
+  # services.displayManager.autoLogin.enable = true;
+  # services.displayManager.autoLogin.user = "alphas";
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
+  # systemd.services."getty@tty1".enable = false;
+  # systemd.services."autovt@tty1".enable = false;
 
   # Enable gnome remote desktop
-  services.gnome.gnome-remote-desktop.enable = true;
+  # services.gnome.gnome-remote-desktop.enable = true;
 
   # Enable xdg portal for screen sharing
   xdg.portal = {
