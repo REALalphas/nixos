@@ -60,6 +60,7 @@
       unstable.identity # Image/video comparison tool
       unstable.spotify # Music streaming client
       pinta # Image editor (Paint.NET alternative)
+      yt-dlp # YouTube downloader
 
       # Gaming
       unstable.osu-lazer-bin # Rhythm game
