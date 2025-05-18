@@ -14,7 +14,7 @@
     {
       type = "nfs";
       mountConfig = {
-        Options = "noatime,noac,actimeo=3";
+        Options = "async,noatime,noac,actimeo=3";
       };
       what = "10.20.20.1:/mnt/M2/user/alphas";
       where = "/mnt/web-2xl/dump";
