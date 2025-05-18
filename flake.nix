@@ -9,9 +9,6 @@
     nixpkgs-24-11.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-23-11.url = "github:nixos/nixpkgs/nixos-23.11";
-
-    # nixarr
-    nixarr.url = "github:rasmus-kirk/nixarr";
   };
 
   outputs =
@@ -22,7 +19,6 @@
       nixpkgs-24-11,
       nixpkgs-24-05,
       nixpkgs-23-11,
-      nixarr,
       ...
     }:
     let
@@ -98,9 +94,6 @@
           modules = [
             # Add caching
             ./cache.nix
-
-            nixarr.nixosModules.default
-
             ./servers/${configName}
 
             # Configuration
