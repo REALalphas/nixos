@@ -71,6 +71,10 @@
       "git.autofetch" = true;
       # Make non native
       "window.titleBarStyle" = "custom";
+
+      "github.copilot.enable" = {
+        "*" = false;
+      };
     };
   };
 
