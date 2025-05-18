@@ -49,6 +49,7 @@
       # Communication
       #######################
 
+      discord # Official Discord client
       vesktop # Discord Web client with Wayland support
       element-desktop # Matrix chat client
 
