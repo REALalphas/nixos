@@ -3,8 +3,9 @@
 
   inputs = {
     # nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-nstbl.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-25-05.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-24-11.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-24-05.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-23-11.url = "github:nixos/nixpkgs/nixos-23.11";
@@ -17,6 +18,7 @@
     inputs@{
       self,
       nixpkgs-nstbl,
+      nixpkgs-25-05,
       nixpkgs-24-11,
       nixpkgs-24-05,
       nixpkgs-23-11,
@@ -27,6 +29,18 @@
       overlays = [
         (final: prev: {
           unstable = import nixpkgs-nstbl {
+            inherit (final) system;
+            config.allowUnfree = true;
+          };
+        })
+        (final: prev: {
+          nix25-05 = import nixpkgs-25-05 {
+            inherit (final) system;
+            config.allowUnfree = true;
+          };
+        })
+        (final: prev: {
+          nix24-11 = import nixpkgs-24-11 {
             inherit (final) system;
             config.allowUnfree = true;
           };
@@ -51,15 +65,13 @@
       configName = config.system.configurationName;
       hostname = config.system.configurationName;
       nixosVersion = config.system.nixosVersion;
-      stateVersion =
-        if nixosVersion == "unstable" then
-            "25.05"
-        else
-            nixosVersion;
+      stateVersion = if nixosVersion == "unstable" then "25.05" else nixosVersion;
 
       nixpkgs =
         if nixosVersion == "unstable" then
           inputs.nixpkgs-nstbl
+        else if nixosVersion == "25.05" then
+          inputs.nixpkgs-25-05
         else if nixosVersion == "24.11" then
           inputs.nixpkgs-24-11
         else if nixosVersion == "24.05" then
