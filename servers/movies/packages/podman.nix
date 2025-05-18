@@ -21,6 +21,7 @@ in
     virtualisation.podman = {
       enable = true;
       dockerCompat = true;
+      dockerSocket.enable = true;
     };
     virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
   };
