@@ -26,9 +26,9 @@
             96000
           ];
           default.clock.rate = 96000;
-          default.clock.quantum = 128;
+          default.clock.quantum = 512;
           default.clock.min-quantum = 128;
-          default.clock.max-quantum = 512;
+          default.clock.max-quantum = 1024;
         };
       };
       pipewire-pulse."92-low-latency" = {
@@ -36,11 +36,11 @@
           {
             name = "libpipewire-module-protocol-pulse";
             args = {
-              pulse.default.req = "128/96000";
+              pulse.default.req = "256/96000";
               pulse.min.req = "128/96000";
-              pulse.max.req = "128/96000";
+              pulse.max.req = "1024/96000";
               pulse.min.quantum = "128/96000";
-              pulse.max.quantum = "128/96000";
+              pulse.max.quantum = "1024/96000";
             };
           }
         ];
