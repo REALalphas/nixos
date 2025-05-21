@@ -30,10 +30,10 @@ let
   _.qbittorrent = {
     image = "lscr.io/linuxserver/qbittorrent";
     ports = [
-      "8080:8080"
-      "6882:6882"
-      "6882:6882/udp"
-      "7656:7656"
+      # "8080:8080"
+      # "6882:6882"
+      # "6882:6882/udp"
+      # "7656:7656"
     ];
     volumes = [
       "/mnt/web-2xl/dump/Media/config/qbittorrent:/config"
@@ -49,7 +49,7 @@ let
     dependsOn = [ ];
     user = "1000";
     autoStart = true;
-    # extraOptions = [ "--network=host" ];
+    extraOptions = [ "--network=host" ];
   };
   # Usenet Client
   _.nzbget = {
