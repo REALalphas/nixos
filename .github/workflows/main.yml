@@ -9,6 +9,13 @@ jobs:
     name: Update submodules in repo
     runs-on: ubuntu-22.04
     steps:
+    - uses: runsascoded/update-submodules@v1
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
+    - uses: runsascoded/update-submodules@v1
+      with:
+        branch: server
+        token: ${{ secrets.PAT_TOKEN }}
     - uses: actions/checkout@v3
       with:
         submodules: recursive
