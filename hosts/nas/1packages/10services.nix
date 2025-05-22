@@ -46,11 +46,11 @@
   };
 
   # Jellyfin (Home Media Server) # See 12packages.nix
-  services.jellyfin = {
-    enable = true;
-    openFirewall = true;
-    user = "alphas";
-  };
+  # services.jellyfin = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   user = "alphas";
+  # };
 
   # Flatpak for users support # See 5systemd.nix
   services.flatpak.enable = true;

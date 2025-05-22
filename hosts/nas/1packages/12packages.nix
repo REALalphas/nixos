@@ -15,7 +15,7 @@
       # ntfs3g
 
       # Nix formatter # See programs.nix
-      nixfmt-rfc-style
+      unstable.nixfmt-rfc-style
 
       # NFS Support # See 5systemd.nix # See 10services.nix
       nfs-utils
@@ -33,20 +33,20 @@
       fzf
 
       # Distrobox
-      distrobox
+      # distrobox
 
       # Universal proxy platform
-      sing-box
+      # sing-box
 
       # Duplicate file finder
-      czkawka
+      # czkawka
 
       ### Media & Entertainment
       # Sound recorder
       gnome-sound-recorder
 
       # Modern GTK4 audio player
-      amberol # (depr)
+      # amberol # (depr)
       unstable.decibels
 
       # Video players
@@ -65,7 +65,7 @@
       # davinci-resolve
 
       # Professional video editor
-      kdePackages.kdenlive
+      # kdePackages.kdenlive
 
       # 3D Creation/Animation/Publishing System
       blender-hip
@@ -80,7 +80,7 @@
       carla
 
       # Room Eq Wizard
-      roomeqwizard
+      # roomeqwizard
 
       ### Office & Productivity
       # OnlyOffice Editors
@@ -118,19 +118,19 @@
 
       ## Web Development
       # NodeJS Runtime
-      nodejs_22
+      nodejs_23
 
       # NodeJS gyp
-      gobject-introspection
-      cairo
-      pkg-config
+      # gobject-introspection
+      # cairo
+      # pkg-config
 
       ### Communication
       # Secure messaging application
       signal-desktop
 
       # Cross-platform universal messaging app
-      beeper
+      # beeper
 
       ### Remote Access
       # Remote desktop client supporting multiple protocols
@@ -141,9 +141,9 @@
 
       ### Media Server
       # Jellyfin (Home Media Server) # See 10services.nix
-      jellyfin
-      jellyfin-web
-      jellyfin-ffmpeg
+      # jellyfin
+      # jellyfin-web
+      # jellyfin-ffmpeg
 
       ### File Sharing
       # BitTorrent Client
@@ -172,7 +172,7 @@
       qgnomeplatform-qt6
 
       # Ladybird Browser (Fork from SerenityOS)
-      unstable.ladybird
+      # unstable.ladybird
 
       # Go lang
       go

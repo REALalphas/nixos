@@ -16,7 +16,7 @@
       nil # Alternative Nix Language Server
 
       # Version Control
-      gh # GitHub CLI
+      # gh # GitHub CLI
 
       # Development Tools
       # unstable.alpaca       # GTK4 Ollama client
@@ -49,23 +49,26 @@
       # Communication
       #######################
 
-      discord # Official Discord client
+      (discord.override {
+        withVencord = true;
+      }) # Official Discord client with Vencord
+      # discord # Official Discord client
       vesktop # Discord Web client with Wayland support
-      element-desktop # Matrix chat client
+      # element-desktop # Matrix chat client
 
       #######################
       # Media & Entertainment
       #######################
 
       # Media Applications
-      unstable.identity # Image/video comparison tool
+      # unstable.identity # Image/video comparison tool
       unstable.spotify # Music streaming client
       pinta # Image editor (Paint.NET alternative)
-      yt-dlp # YouTube downloader
+      # yt-dlp # YouTube downloader
 
       # Gaming
       unstable.osu-lazer-bin # Rhythm game
-      rpcs3 # PS3 emulator
+      # rpcs3 # PS3 emulator
       nix23-11.yuzu-mainline # Nintendo Switch Emulator
       prismlauncher # Minecraft launcher
 
