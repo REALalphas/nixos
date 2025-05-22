@@ -118,7 +118,7 @@
 
       ## Web Development
       # NodeJS Runtime
-      nodejs_23
+      nodejs_24
 
       # NodeJS gyp
       # gobject-introspection
