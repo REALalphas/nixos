@@ -3,6 +3,8 @@ on:
     branches:
     - main
     - server
+  schedule:
+  - cron: "0 * * * *"
 
 jobs:
   update-submodules:
