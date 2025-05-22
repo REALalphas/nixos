@@ -2,6 +2,3 @@
 config.nix
 .nix-dir
 testing
-
-# https://github.com/REALalphas/yonix
-yonix
