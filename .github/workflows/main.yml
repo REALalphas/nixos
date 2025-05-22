@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+    - main
+    - server
+
+jobs:
+  update-submodules:
+    name: Update submodules in repo
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        token: ${{ secrets.PAT_TOKEN }}
