@@ -1,3 +1,6 @@
 # Ignore config files that contain unique information for each machine
 config.nix
 .nix-dir
+
+# https://github.com/REALalphas/yonix
+yonix
