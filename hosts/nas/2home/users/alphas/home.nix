@@ -4,7 +4,7 @@
   ...
 }:
 let
-  # Getting username from foldet it's in
+  # Getting username from folder it's in
   username = builtins.baseNameOf (toString ./.);
 in
 {
@@ -37,10 +37,10 @@ in
     "org/gnome/shell".favorite-apps = [
       "org.gnome.Nautilus.desktop"
       "org.gnome.Console.desktop"
-      "org.gnome.Geary.desktop"
       "firefox-devedition.desktop"
-      "code.desktop"
-      "vesktop.desktop"
+      "dev.zed.Zed.desktop"
+      "signal.desktop"
+      "discord.desktop"
     ];
     # Add qemu handler for VMs
     "org/virt-manager/virt-manager/connections" = {

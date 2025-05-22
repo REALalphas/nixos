@@ -4,7 +4,7 @@
   ...
 }:
 let
-  # Getting username from foldet it's in
+  # Getting username from folder it's in
   username = builtins.baseNameOf (toString ./.);
 in
 {
