@@ -24,8 +24,10 @@
       insomnia # API Testing platform
 
       # Programming Languages
-      lua # Lua interpreter
+      luajit # Lua interpreter
       luajitPackages.luarocks # Lua package manager
+      luajitPackages.http
+      luajitPackages.luasocket
 
       #######################
       # System & Utilities
@@ -77,6 +79,7 @@
       #######################
 
       obsidian # Note taking application
+      newsflash # News rss reader
 
       ################################
       # Currently Disabled Packages
