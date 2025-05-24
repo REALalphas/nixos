@@ -16,5 +16,6 @@ in
 
   config = lib.mkIf cfg {
     services.tailscale.enable = true;
+    services.tailscale.useRoutingFeatures = "server";
   };
 }
