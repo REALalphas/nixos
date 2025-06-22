@@ -71,8 +71,12 @@
       # Gaming
       unstable.osu-lazer-bin # Rhythm game
       # rpcs3 # PS3 emulator
-      nix23-11.yuzu-mainline # Nintendo Switch Emulator
+      # nix23-11.yuzu-mainline # Nintendo Switch Emulator
+      nix24-11.torzu
       prismlauncher # Minecraft launcher
+
+      # Dev builder and env for browser
+      nix24-11.nodePackages.parcel
 
       #######################
       # Productivity

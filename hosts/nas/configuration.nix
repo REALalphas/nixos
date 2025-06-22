@@ -25,6 +25,7 @@
   ## GNOME DE
   # Enable the X11 windowing system. (Also wayland)
   services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "amdgpu" ];
   services.xserver.excludePackages = with pkgs; [
     # Simple terminal
     xterm

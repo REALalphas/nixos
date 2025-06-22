@@ -15,7 +15,7 @@
       "usbhid"
       "sd_mod"
     ];
-    kernelModules = [ ];
+    kernelModules = [ "amdgpu" ];
   };
   # Bootloader
   boot.loader = {
@@ -28,13 +28,13 @@
   boot = {
     kernel.sysctl = {
       # Pressure to clean inodes and dentries in cache
-      "vm.vfs_cache_pressure" = 50;
+      "vm.vfs_cache_pressure" = 90;
       # Make early write
       "vm.dirty_ratio" = 20;
       # Start early write
       "vm.dirty_background_ratio" = 10;
       # Expire cache fast
-      "vm.dirty_expire_centisecs" = 4000;
+      "vm.dirty_expire_centisecs" = 40;
       # Make kernel very aggressive
       "vm.overcommit_memory" = 2;
       "vm.overcommit_ratio" = 95;

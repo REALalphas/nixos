@@ -26,8 +26,8 @@
   services.rpcbind.enable = true;
 
   # Duplicati service for Backups
-  services.duplicati.enable = true; # Port 8200 (http://127.0.0.1:8200)
-  services.duplicati.user = "alphas"; # Run only for user you want to backup, run as root at you risk
+  # services.duplicati.enable = true; # Port 8200 (http://127.0.0.1:8200)
+  # services.duplicati.user = "alphas"; # Run only for user you want to backup, run as root at you risk
 
   # Packages udev (rules)
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
@@ -52,6 +52,18 @@
   #   user = "alphas";
   # };
 
+  # Moonlight Streaming Server
+  services.sunshine = {
+    package = pkgs.nix24-11.sunshine;
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true; # only needed for Wayland -- omit this when using with Xorg
+    openFirewall = true;
+  };
+
   # Flatpak for users support # See 5systemd.nix
   services.flatpak.enable = true;
+
+  # node_exporter
+  services.prometheus.exporters.node.enable = true;
 }

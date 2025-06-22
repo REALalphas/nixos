@@ -83,11 +83,14 @@
       # roomeqwizard
 
       ### Office & Productivity
-      # OnlyOffice Editors
+      # OnlyOffice Editors (Office suite)
       onlyoffice-bin_latest
 
       # Web browser
+      # Open source web browser from Google
       chromium
+      # Fork of Firefox, focused on privacy, security and freedom
+      librewolf
 
       ### Development
       ## Mobile Development
@@ -180,6 +183,9 @@
       # ROCm Tools
       rocmPackages.rocm-smi
       rocmPackages.rocminfo
+
+      # LM-Studio
+      lmstudio
 
       ### GNOME Extensions
     ])
