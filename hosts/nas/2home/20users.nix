@@ -17,6 +17,7 @@ let
         "render"
         "i2c"
         "dialout"
+        "hardinfo2"
       ];
     }
     {

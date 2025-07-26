@@ -94,6 +94,7 @@
     QT_WAYLAND_DECORATION = "adwaita";
     QT_QPA_PLATFORMTHEME = "gnome";
     QT_STYLE_OVERRIDE = "adwaita-dark";
+    QT_QPA_PLATFORM_PLUGIN_PATH = "${pkgs.unstable.libsForQt5.qt5.qtwayland.bin}/lib/qt-${pkgs.unstable.libsForQt5.qt5.qtwayland.version}/plugins";
     # GStreamer, nautilus fix (File properties)
     GST_PLUGIN_SYSTEM_PATH_1_0 = lib.makeSearchPathOutput "lib" "lib/gstreamer-1.0" (
       with pkgs.gst_all_1;

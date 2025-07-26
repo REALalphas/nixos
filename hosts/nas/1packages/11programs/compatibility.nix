@@ -4,6 +4,12 @@
   ...
 }:
 {
+  # Appimage Support with (appimage-run)
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
   # Nix-ld (run unpatched dynamic binaries)
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries =
@@ -34,6 +40,22 @@
       libxkbcommon.out
       xorg.libXrandr.out
       libGL.out
+      e2fsprogs.out
+
+      # ChatGPT
+      appimage-run.out
+      qt5.qtbase.out
+      qt5.qtx11extras.out
+      libxkbcommon.out
+      xorg.libxcb.out
+      xorg.xcbutil.out
+      xorg.xcbutilimage.out
+      xorg.xcbutilkeysyms.out
+      xorg.xcbutilwm.out
+      fontconfig.out
+      freetype.out
+      glib.out
+      zlib.out
 
       # node-gyp - node-gtk
       gobject-introspection

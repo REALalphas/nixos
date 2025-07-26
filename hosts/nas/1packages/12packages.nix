@@ -16,6 +16,13 @@
 
       # Nix formatter # See programs.nix
       unstable.nixfmt-rfc-style
+      # Language Server for Python (Zed)
+      python313Packages.python-lsp-server
+      python313Packages.plyvel
+
+      # Python
+      python313Full
+      python313Packages.requests
 
       # NFS Support # See 5systemd.nix # See 10services.nix
       nfs-utils
@@ -33,7 +40,13 @@
       fzf
 
       # Distrobox
-      # distrobox
+      distrobox
+
+      # Proxy Tunneling Utility
+      tun2proxy
+
+      # System information
+      unstable.hardinfo2
 
       # Universal proxy platform
       # sing-box
@@ -131,6 +144,7 @@
       ### Communication
       # Secure messaging application
       signal-desktop
+      unstable.beeper
 
       # Cross-platform universal messaging app
       # beeper
@@ -186,6 +200,10 @@
 
       # LM-Studio
       lmstudio
+
+      # Qt
+      unstable.libsForQt5.qt5.qtwayland
+      kdePackages.qtwayland
 
       ### GNOME Extensions
     ])
