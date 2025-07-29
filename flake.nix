@@ -94,7 +94,8 @@
           modules = [
             # Add caching
             ./cache.nix
-            ./servers/${configName}
+            ./hosts/${configName}
+            ./packages
 
             # Configuration
             {
