@@ -117,6 +117,8 @@
       "dotnet-sdk-wrapped-6.0.428"
       "dotnet-sdk-6.0.428"
       "beekeeper-studio-5.1.5"
+      "ventoy-gtk3-1.1.05"
+      "ventoy-1.1.05"
     ];
   };
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
