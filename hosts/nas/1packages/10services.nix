@@ -53,13 +53,13 @@
   # };
 
   # Moonlight Streaming Server
-  services.sunshine = {
-    package = pkgs.nix24-11.sunshine;
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true; # only needed for Wayland -- omit this when using with Xorg
-    openFirewall = true;
-  };
+  # services.sunshine = {
+  #   package = pkgs.nix24-11.sunshine;
+  #   enable = true;
+  #   autoStart = true;
+  #   capSysAdmin = true; # only needed for Wayland -- omit this when using with Xorg
+  #   openFirewall = true;
+  # };
 
   # Flatpak for users support # See 5systemd.nix
   services.flatpak.enable = true;
