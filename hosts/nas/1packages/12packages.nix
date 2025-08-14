@@ -205,6 +205,11 @@
       unstable.libsForQt5.qt5.qtwayland
       kdePackages.qtwayland
 
+      # Ryujinx Fork
+      unstable.ryubing
+
+      unstable.github-desktop
+
       ### GNOME Extensions
     ])
     ++ (with pkgs.gnomeExtensions; [
