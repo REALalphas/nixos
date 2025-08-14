@@ -11,12 +11,12 @@
     nixpkgs-23-11.url = "github:nixos/nixpkgs/nixos-23.11";
 
     # aagl-gtk-on-nix
-    aagl.url = "github:ezKEa/aagl-gtk-on-nix/release-24.11";
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix/release-25.05";
     aagl.inputs.nixpkgs.follows = "nixpkgs";
 
     # Home Manager
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
