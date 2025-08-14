@@ -11,14 +11,12 @@
   };
 
   # Visual Studio Code
-  programs.vscode = {
-    enable = true;
+  programs.vscode.profiles.default = {
     # Disable update check
     enableUpdateCheck = false;
     # Enable extensions update check
     enableExtensionUpdateCheck = true;
 
-    package = pkgs.vscode;
     extensions =
       with pkgs.vscode-extensions;
       [
@@ -76,6 +74,10 @@
         "*" = false;
       };
     };
+  };
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscode;
   };
 
   # Spotify with mods
