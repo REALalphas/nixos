@@ -2,3 +2,4 @@
 config.nix
 .nix-dir
 testing
+*.secret
