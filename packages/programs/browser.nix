@@ -14,19 +14,20 @@ in
 
     provider = lib.mkOption {
       type = lib.types.enum [
+        "none"
         "firefox"
         "firefox-beta"
         "firefox-esr"
         "firefox-dev"
         "librewolf"
       ];
-      default = "firefox"; # Changed default to a valid provider
+      default = "none"; # Changed default to a valid provider
       description = "Select your preferred browser option";
     };
 
     useBin = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
       description = "Whether to use pre-compiled binary or not";
     };
   };
