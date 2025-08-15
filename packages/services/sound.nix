@@ -112,7 +112,7 @@ in
       ];
     })
     (lib.mkIf cfg.airplay.increaceLatency {
-      services.extraConfig.pipewire."10-airplay"."context.modules" = [
+      services.pipewire.extraConfig.pipewire."10-airplay"."context.modules" = [
         {
           name = "libpipewire-module-raop-discover";
           args = {
