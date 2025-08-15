@@ -5,7 +5,7 @@
 {
   services.snipe-it = {
     enable = true;
-    appKeyFile = /home/alphas/snipe-it.secret;
+    appKeyFile = /run/keys/snipe-it/appkey;
     # hostName = "debugsnipeit.example.invalid";
     database.createLocally = true;
   };
