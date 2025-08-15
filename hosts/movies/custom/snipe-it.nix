@@ -2,11 +2,16 @@
   ...
 }:
 
+let
+  host = "snipe.nas-2xl.ru";
+in
 {
   services.snipe-it = {
     enable = true;
+    hostName = host;
+    appURL = "https://${host}";
     appKeyFile = ./snipe-it.secret;
-    hostName = "snipe.nas-2xl.ru";
+
     database.createLocally = true;
   };
 
