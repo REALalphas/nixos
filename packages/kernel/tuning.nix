@@ -14,12 +14,13 @@ in
 
       filesystemCacheBehavior = lib.mkOption {
         type = lib.types.enum [
+          "none"
           "balanced"
           "responsive"
           "aggressive-caching"
           "large-files"
         ];
-        default = "balanced";
+        default = "none";
         description = ''
           Controls how the kernel caches filesystem information.
 
