@@ -6,7 +6,7 @@
   services.snipe-it = {
     enable = true;
     appKeyFile = ./snipe-it.secret;
-    # hostName = "debugsnipeit.example.invalid";
+    # hostName = "movies.xl";
     database.createLocally = true;
   };
 
