@@ -6,7 +6,7 @@
   services.snipe-it = {
     enable = true;
     appKeyFile = ./snipe-it.secret;
-    # hostName = "movies.xl";
+    hostName = "snipe.nas-2xl.ru";
     database.createLocally = true;
   };
 
