@@ -27,7 +27,7 @@ in
   };
 
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf cfg.splash {
       boot.plymouth.enable = true;
     })
     (lib.mkIf cfg.silence {
