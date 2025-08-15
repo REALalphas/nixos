@@ -15,7 +15,7 @@ in
       description = "Whether to enable Git service (a version control system)";
     };
     branch = lib.mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
       default = "master";
       description = "Set default branch";
     };
