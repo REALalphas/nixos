@@ -6,6 +6,9 @@
   # Disable CUPS to print documents.
   services.printing.enable = false;
 
+  # OOM Killer
+  services.earlyoom.enable = true;
+
   # Open WebUI Ollama web wrapper
   # services.open-webui.package = pkgs.open-webui;
   # services.open-webui.enable = true;
