@@ -36,7 +36,7 @@
       # Expire cache fast
       "vm.dirty_expire_centisecs" = 40;
       # Make kernel very aggressive
-      "vm.overcommit_memory" = 2;
+      "vm.overcommit_memory" = 0;
       "vm.overcommit_ratio" = 95;
       # Give more memory to the kernel space
       "vm.min_free_kbytes" = 131072; # 128MB
