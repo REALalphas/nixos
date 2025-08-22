@@ -41,39 +41,39 @@
         }
       ];
 
-    userSettings = {
-      # General settings
-      "window.zoomLevel" = 0.8;
-      "security.workspace.trust.enabled" = false;
-      "files.autoSave" = "afterDelay";
-      # Workbench settings
-      "workbench.colorTheme" = "Bearded Theme Black & Amethyst";
-      "workbench.iconTheme" = "gruvbox-material-icon-theme";
-      "workbench.productIconTheme" = "material-product-icons";
-      "workbench.tree.renderIndentGuides" = "always";
-      "workbench.tree.indent" = 26;
-      "workbench.sideBar.location" = "right";
-      # Editor settings
-      "editor.formatOnSave" = true;
-      "editor.smoothScrolling" = true;
-      "editor.cursorBlinking" = "smooth";
-      "editor.cursorSmoothCaretAnimation" = "on";
-      "editor.fontFamily" = "'Fira Code', 'Droid Sans Mono', monospace";
-      "editor.fontSize" = 14;
-      "editor.fontLigatures" = true;
-      # Terminal settings
-      "terminal.integrated.smoothScrolling" = true;
-      "terminal.integrated.scrollback" = 3000;
-      "terminal.integrated.fontSize" = 11;
-      # Git settings
-      "git.autofetch" = true;
-      # Make non native
-      "window.titleBarStyle" = "custom";
+    # userSettings = {
+    #   # General settings
+    #   "window.zoomLevel" = 0.8;
+    #   "security.workspace.trust.enabled" = false;
+    #   "files.autoSave" = "afterDelay";
+    #   # Workbench settings
+    #   "workbench.colorTheme" = "Bearded Theme Black & Amethyst";
+    #   "workbench.iconTheme" = "gruvbox-material-icon-theme";
+    #   "workbench.productIconTheme" = "material-product-icons";
+    #   "workbench.tree.renderIndentGuides" = "always";
+    #   "workbench.tree.indent" = 26;
+    #   "workbench.sideBar.location" = "right";
+    #   # Editor settings
+    #   "editor.formatOnSave" = true;
+    #   "editor.smoothScrolling" = true;
+    #   "editor.cursorBlinking" = "smooth";
+    #   "editor.cursorSmoothCaretAnimation" = "on";
+    #   "editor.fontFamily" = "'Fira Code', 'Droid Sans Mono', monospace";
+    #   "editor.fontSize" = 14;
+    #   "editor.fontLigatures" = true;
+    #   # Terminal settings
+    #   "terminal.integrated.smoothScrolling" = true;
+    #   "terminal.integrated.scrollback" = 3000;
+    #   "terminal.integrated.fontSize" = 11;
+    #   # Git settings
+    #   "git.autofetch" = true;
+    #   # Make non native
+    #   "window.titleBarStyle" = "custom";
 
-      "github.copilot.enable" = {
-        "*" = false;
-      };
-    };
+    #   "github.copilot.enable" = {
+    #     "*" = false;
+    #   };
+    # };
   };
   programs.vscode = {
     enable = true;
