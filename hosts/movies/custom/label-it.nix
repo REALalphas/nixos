@@ -15,8 +15,8 @@
     ports = [
       "3001:3000"
     ];
-    volumes = [
-      "/home/alphas/labelit_dotenv:/app/.env"
+    environmentFiles = [
+      /home/alphas/labelit_dotenv
     ];
     dependsOn = [ ];
     user = "1000";
