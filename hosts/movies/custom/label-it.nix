@@ -3,9 +3,6 @@
   ...
 }:
 
-let
-  host = "snipe.nas-2xl.ru";
-in
 {
   environment.sessionVariables.PUPPETEER_SKIP_DOWNLOAD = 1;
   environment.sessionVariables.PUPPETEER_EXECUTABLE_PATH = "${pkgs.chromium.outPath}/bin/chromium";
