@@ -135,6 +135,8 @@
       ## Web Development
       # NodeJS Runtime
       nodejs_24
+      # Chrome for puppeteer
+      chromedriver
 
       # NodeJS gyp
       # gobject-introspection
