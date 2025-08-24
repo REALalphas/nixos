@@ -18,10 +18,6 @@
     volumes = [
       "/home/alphas/labelit_dotenv:/app/.env"
     ];
-    environment = {
-      NODE_ENV = "production";
-      CHROMIUM_PATH = "/usr/bin/chromium";
-    };
     dependsOn = [ ];
     user = "1000";
     autoStart = true;
