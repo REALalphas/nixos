@@ -2,4 +2,6 @@
 config.nix
 .nix-dir
 testing
+data
+custom-data
 *.secret
