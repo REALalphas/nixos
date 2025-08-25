@@ -12,9 +12,7 @@
 
   virtualisation.oci-containers.containers.labelIt = {
     image = "ghcr.io/realalphas/label-it:latest";
-    ports = [
-      "3001:3000"
-    ];
+    extraOptions = [ "--network=host" ];
     volumes = [
       "/home/alphas/labelit_dotenv:/app/.env"
     ];
