@@ -10,8 +10,7 @@ in
     enable = true;
     hostName = host;
     appURL = "https://${host}";
-    # head -c 32 /dev/urandom | base64
-    appKeyFile = ../custom-data/snipe-it.secret;
+    appKeyFile = ./data/snipe-it.secret;
 
     database.createLocally = true;
   };
