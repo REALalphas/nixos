@@ -16,8 +16,6 @@
     volumes = [
       "/home/alphas/labelit_dotenv:/app/.env"
     ];
-    dependsOn = [ ];
-    user = "1000";
     autoStart = true;
   };
 }
