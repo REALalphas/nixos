@@ -10,7 +10,7 @@
       mountConfig = {
         Options = "noatime";
       };
-      what = "192.168.2.3:/mnt/M1/user/alphas";
+      what = "192.168.3.1:/mnt/M1/user/alphas";
       where = "/mnt/web-2xl/alphas";
     }
     {
@@ -18,7 +18,7 @@
       mountConfig = {
         Options = "noatime";
       };
-      what = "192.168.2.3:/mnt/M2/user/alphas";
+      what = "192.168.3.1:/mnt/M2/user/alphas";
       where = "/mnt/web-2xl/dump";
     }
   ];
@@ -27,14 +27,14 @@
     {
       wantedBy = [ "multi-user.target" ];
       automountConfig = {
-        TimeoutIdleSec = "30";
+        TimeoutIdleSec = "10";
       };
       where = "/mnt/web-2xl/alphas";
     }
     {
       wantedBy = [ "multi-user.target" ];
       automountConfig = {
-        TimeoutIdleSec = "30";
+        TimeoutIdleSec = "10";
       };
       where = "/mnt/web-2xl/dump";
     }
